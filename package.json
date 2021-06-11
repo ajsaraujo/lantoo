@@ -25,9 +25,11 @@
     "eslint-config-oclif-typescript": "^0.1.0",
     "eslint-config-prettier": "^8.3.0",
     "globby": "^10.0.2",
+    "husky": "^6.0.0",
     "mocha": "^5.2.0",
     "nyc": "^14.1.1",
     "prettier": "^2.3.1",
+    "pretty-quick": "^3.1.0",
     "rimraf": "^3.0.2",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.9"
@@ -56,11 +58,17 @@
   },
   "repository": "ajsaraujo/lantoo",
   "scripts": {
+    "pretty-quick": "pretty-quick",
     "postpack": "rimraf oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "types": "lib/index.d.ts"
 }
