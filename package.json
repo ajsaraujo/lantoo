@@ -18,10 +18,12 @@
     "@oclif/dev-cli": "^1.26.0",
     "@oclif/test": "^1.2.8",
     "@types/chai": "^4.2.18",
+    "@types/chai-as-promised": "^7.1.4",
     "@types/fs-extra": "^9.0.11",
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.17.60",
     "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^5.16.0",
     "eslint-config-oclif": "^3.1.0",
     "eslint-config-oclif-typescript": "^0.1.0",
@@ -63,8 +65,8 @@
     "pretty-quick": "pretty-quick",
     "postpack": "rimraf oclif.manifest.json",
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "test": "mocha test/**/*.ts",
-    "coverage": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
+    "test": "mocha src/**/*.spec.ts",
+    "coverage": "nyc --extension .ts mocha --forbid-only \"test/**/*.spec.ts\"",
     "version": "oclif-dev readme && git add README.md"
   },
   "husky": {

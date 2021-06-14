@@ -1,7 +1,12 @@
 import * as fs from 'fs-extra'
 import * as path from 'path'
 
-export class PreferencesStorage {
+export interface IPreferencesStorage {
+  get(key: string): Promise<string>
+  set(key: string, value: string): Promise<void>
+}
+
+export class PreferencesStorage implements IPreferencesStorage {
   private configFilePath: string
 
   private configObject: Record<string, string> = {}
