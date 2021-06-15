@@ -1,18 +1,20 @@
 import * as fs from 'fs-extra'
 import * as path from 'path'
+import { singleton } from 'tsyringe'
 
 export interface IPreferencesStorage {
   get(key: string): Promise<string>
   set(key: string, value: string): Promise<void>
 }
 
+@singleton()
 export class PreferencesStorage implements IPreferencesStorage {
-  private configFilePath: string
+  private configFilePath = ''
 
   private configObject: Record<string, string> = {}
 
-  constructor(configDirectory: string) {
-    this.configFilePath = path.join(configDirectory, 'config.json')
+  set configDirectory(directory: string) {
+    this.configFilePath = path.join(directory, 'config.json')
   }
 
   async get(key: string): Promise<string> {

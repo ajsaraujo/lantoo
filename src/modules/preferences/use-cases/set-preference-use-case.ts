@@ -1,5 +1,7 @@
+import { injectable } from 'tsyringe'
 import { IPreferencesStorage } from '../preferences-storage'
 
+@injectable()
 export class SetPreferenceUseCase {
   constructor(private preferencesStorage: IPreferencesStorage) {}
 
