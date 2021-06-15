@@ -1,22 +1,6 @@
-import chai, { expect } from 'chai'
-import chaiAsPromised from 'chai-as-promised'
-
-import { IPreferencesStorage } from '../preferences-storage'
+import { expect } from 'chai'
+import { MockPreferenceStorage } from '../preferences-storage'
 import { SetPreferenceUseCase } from './set-preference-use-case'
-
-chai.use(chaiAsPromised)
-
-class MockPreferenceStorage implements IPreferencesStorage {
-  private preferencesObject: { [key: string]: string } = {}
-
-  async get(key: string) {
-    return this.preferencesObject[key]
-  }
-
-  async set(key: string, value: string) {
-    this.preferencesObject[key] = value
-  }
-}
 
 describe('SetPreferenceUseCase', () => {
   let storage: MockPreferenceStorage

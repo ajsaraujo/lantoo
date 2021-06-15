@@ -39,3 +39,15 @@ export class PreferencesStorage implements IPreferencesStorage {
     return fs.writeJson(this.configFilePath, this.configObject)
   }
 }
+
+export class MockPreferenceStorage implements IPreferencesStorage {
+  private preferencesObject: { [key: string]: string } = {}
+
+  async get(key: string) {
+    return this.preferencesObject[key]
+  }
+
+  async set(key: string, value: string) {
+    this.preferencesObject[key] = value
+  }
+}
