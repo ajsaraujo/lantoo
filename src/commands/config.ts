@@ -1,9 +1,13 @@
 import Command from '@oclif/command'
 import { IConfig } from '@oclif/config'
+
+import 'reflect-metadata'
 import { container } from 'tsyringe'
 
-import { PreferencesStorage, GetPreferencesUseCase } from '@modules/preferences'
-import { GetPreferenceUseCase } from '@modules/preferences/use-cases/get-preference-use-case'
+import {
+  PreferencesStorage,
+  GetPreferenceUseCase,
+} from '../modules/preferences'
 
 export default class Config extends Command {
   static description = 'get/set user preferences'
@@ -37,16 +41,11 @@ export default class Config extends Command {
   }
 
   async run() {
-    try {
-      const { args } = this.parse(Config)
-      const { key, value } = args
+    const { args } = this.parse(Config)
+    const { key, value } = args
 
-      if (!value) {
-        const value = this.findKey(key)
-        this.log(`Found: ${value}`)
-      }
-    } catch (error) {
-      this._help()
+    if (!value) {
+      await this.findKey(key)
     }
   }
 
@@ -55,11 +54,16 @@ export default class Config extends Command {
     storage.configDirectory = this.config.configDir
   }
 
-  private findKey(key: string) {
-    const getPreference = container.resolve<GetPreferenceUseCase>(
-      GetPreferencesUseCase
-    )
+  private async findKey(key: string) {
+    const getPreference =
+      container.resolve<GetPreferenceUseCase>(GetPreferenceUseCase)
 
-    return getPreference.run(key)
+    const value = await getPreference.run(key)
+
+    if (value) {
+      this.log(value)
+    } else {
+      this.log(`No value is set for the '${key}' key.`)
+    }
   }
 }

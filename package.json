@@ -63,6 +63,7 @@
     ],
     "hooks": {
       "init": [
+        "./lib/hooks/init"
       ]
     }
   },

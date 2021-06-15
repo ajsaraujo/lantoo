@@ -1,9 +1,7 @@
-import { Hook } from '@oclif/config'
+import { container } from 'tsyringe'
+import { IPreferencesStorage, PreferencesStorage } from '../modules/preferences'
 
-// Tsyringe asks us to import reflect-metadata.
-const hook: Hook<'init'> = async () => {
-  console.log('oii')
-  require('reflect-metadata')
-}
-
-export default hook
+container.register<IPreferencesStorage>(
+  'PreferencesStorage',
+  PreferencesStorage
+)
