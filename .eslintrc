@@ -1,6 +1,7 @@
 {
   "extends": ["oclif", "oclif-typescript", "prettier"],
   "rules": {
+    "no-useless-constructor": "off",
     "@typescript-eslint/interface-name-prefix": "off"
   }
 }
