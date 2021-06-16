@@ -1,7 +1,11 @@
 import { container } from 'tsyringe'
 import { IPreferencesStorage, PreferencesStorage } from '../modules/preferences'
 
-container.register<IPreferencesStorage>(
-  'PreferencesStorage',
-  PreferencesStorage
-)
+function registerSingletons() {
+  container.register<IPreferencesStorage>(
+    'PreferencesStorage',
+    PreferencesStorage
+  )
+}
+
+export default registerSingletons

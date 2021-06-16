@@ -16,11 +16,7 @@ export default class Config extends Command {
 
   static usage = 'config lang'
 
-  static examples = [
-    '$ lantoo config lang pt-BR',
-    '$ lantoo config lang',
-    '$ lantoo config --help',
-  ]
+  static examples = ['$ lantoo config lang pt-BR', '$ lantoo config lang']
 
   static args = [
     {
@@ -63,7 +59,8 @@ export default class Config extends Command {
     if (value) {
       this.log(value)
     } else {
-      this.log(`No value is set for the '${key}' key.`)
+      this.log(`No value is set for the '${key}' key.\n`)
+      this.log(`To set one, run $ lantoo config lang <<value>>`)
     }
   }
 }
