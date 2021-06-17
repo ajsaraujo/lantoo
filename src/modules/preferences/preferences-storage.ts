@@ -1,14 +1,15 @@
 import * as fs from 'fs-extra'
 import * as path from 'path'
-import { singleton } from 'tsyringe'
 
 export interface IPreferencesStorage {
+  name: string
   get(key: string): Promise<string>
   set(key: string, value: string): Promise<void>
 }
 
-@singleton()
 export class PreferencesStorage implements IPreferencesStorage {
+  name = 'true'
+
   private configFilePath = ''
 
   private configObject: Record<string, string> = {}
@@ -43,6 +44,8 @@ export class PreferencesStorage implements IPreferencesStorage {
 }
 
 export class MockPreferenceStorage implements IPreferencesStorage {
+  name = 'mock'
+
   private preferencesObject: { [key: string]: string } = {}
 
   async get(key: string) {
