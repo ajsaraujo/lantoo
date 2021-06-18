@@ -12,32 +12,34 @@ export class PreferencesStorage implements IPreferencesStorage {
 
   private configObject: Record<string, string> = {}
 
+  private configObjectWasLoaded = false
+
   set configDirectory(directory: string) {
     this.configFilePath = path.join(directory, 'config.json')
   }
 
   async get(key: string): Promise<string> {
-    const userConfig = await this.getConfigObject()
-    return userConfig[key]
+    await this.getConfigObject()
+    return this.configObject[key]
   }
 
   async set(key: string, value: string): Promise<void> {
-    const userConfig = await this.getConfigObject()
-    userConfig[key] = value
+    await this.getConfigObject()
 
-    return this.writeConfigToFileSystem()
+    this.configObject[key] = value
+
+    await this.writeConfigToFileSystem()
   }
 
   private async getConfigObject() {
-    if (!this.configObject) {
+    if (!this.configObjectWasLoaded) {
       this.configObject = await fs.readJSON(this.configFilePath)
+      this.configObjectWasLoaded = true
     }
-
-    return this.configObject || {}
   }
 
-  private writeConfigToFileSystem() {
-    return fs.writeJson(this.configFilePath, this.configObject)
+  private async writeConfigToFileSystem() {
+    await fs.writeJson(this.configFilePath, this.configObject)
   }
 }
 
@@ -52,5 +54,9 @@ export class MockPreferenceStorage implements IPreferencesStorage {
 
   async set(key: string, value: string) {
     this.preferencesObject[key] = value
+  }
+
+  clear() {
+    this.preferencesObject = {}
   }
 }

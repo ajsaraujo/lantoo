@@ -2,7 +2,10 @@ import { IConfig } from '@oclif/config'
 
 import { container } from 'tsyringe'
 
-import { GetPreferenceUseCase } from '../modules/preferences'
+import {
+  GetPreferenceUseCase,
+  SetPreferenceUseCase,
+} from '../modules/preferences'
 import Command from './base'
 
 export default class Config extends Command {
@@ -36,12 +39,21 @@ export default class Config extends Command {
     const { args } = this.parse(Config)
     const { key, value } = args
 
-    if (!value) {
-      await this.findKey(key)
+    if (value) {
+      await this.set(key, value)
+    } else {
+      await this.get(key)
     }
   }
 
-  private async findKey(key: string) {
+  private async set(key: string, value: string) {
+    const setPreference =
+      container.resolve<SetPreferenceUseCase>(SetPreferenceUseCase)
+
+    await setPreference.run(key, value)
+  }
+
+  private async get(key: string) {
     const getPreference =
       container.resolve<GetPreferenceUseCase>(GetPreferenceUseCase)
 

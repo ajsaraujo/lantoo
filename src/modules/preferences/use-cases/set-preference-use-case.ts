@@ -1,11 +1,14 @@
-import { injectable } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 import { IPreferencesStorage } from '../preferences-storage'
 
 @injectable()
 export class SetPreferenceUseCase {
-  constructor(private preferencesStorage: IPreferencesStorage) {}
+  constructor(
+    @inject('PreferencesStorage')
+    private preferencesStorage: IPreferencesStorage
+  ) {}
 
   async run(key: string, value: string) {
-    this.preferencesStorage.set(key, value)
+    await this.preferencesStorage.set(key, value)
   }
 }

@@ -9,6 +9,7 @@ export class GetPreferenceUseCase {
   ) {}
 
   async run(key: string): Promise<string> {
-    return this.preferencesStorage.get(key)
+    const value = await this.preferencesStorage.get(key)
+    return value
   }
 }

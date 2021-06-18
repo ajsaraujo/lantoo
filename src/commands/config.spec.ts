@@ -11,10 +11,11 @@ container.registerSingleton<IPreferencesStorage>(
   MockPreferenceStorage
 )
 
-const storage: IPreferencesStorage = container.resolve('PreferencesStorage')
+const storage: MockPreferenceStorage = container.resolve('PreferencesStorage')
+const setup = test.do(() => storage.clear())
 
 describe('config', () => {
-  test
+  setup
     .stdout()
     .command(['config', 'lang'])
     .it('should complain if no value is set', (ctx) => {
@@ -24,11 +25,24 @@ describe('config', () => {
       )
     })
 
-  test
+  setup
     .do(() => storage.set('lang', 'pt-BR'))
     .stdout()
     .command(['config', 'lang'])
     .it('should retrieve a value from the storage if there is one', (ctx) => {
       expect(ctx.stdout).to.contain('pt-BR')
     })
+
+  setup
+    .stdout()
+    .command(['config', 'lang', 'pt-BR'])
+    .it(
+      'should set the language value to pt-BR in the storage',
+      async (ctx) => {
+        const lang = await storage.get('lang')
+
+        expect(ctx.stdout).to.be.empty
+        expect(lang).to.equal('pt-BR')
+      }
+    )
 })
