@@ -75,7 +75,7 @@
     "postpack": "rimraf oclif.manifest.json",
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "mocha src/**/*.spec.ts",
-    "coverage": "nyc --extension .ts mocha --forbid-only \"test/**/*.spec.ts\"",
+    "coverage": "nyc --extension .ts mocha --forbid-only \"src/**/*.spec.ts\"",
     "version": "oclif-dev readme && git add README.md"
   },
   "husky": {
