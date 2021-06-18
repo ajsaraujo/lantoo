@@ -31,10 +31,6 @@ export default class Config extends Command {
     },
   ]
 
-  constructor(argv: string[], config: IConfig) {
-    super(argv, config)
-  }
-
   async run() {
     const { args } = this.parse(Config)
     const { key, value } = args
