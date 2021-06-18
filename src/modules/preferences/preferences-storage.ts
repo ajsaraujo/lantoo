@@ -2,14 +2,12 @@ import * as fs from 'fs-extra'
 import * as path from 'path'
 
 export interface IPreferencesStorage {
-  name: string
   get(key: string): Promise<string>
   set(key: string, value: string): Promise<void>
+  configDirectory: string
 }
 
 export class PreferencesStorage implements IPreferencesStorage {
-  name = 'true'
-
   private configFilePath = ''
 
   private configObject: Record<string, string> = {}
@@ -44,7 +42,7 @@ export class PreferencesStorage implements IPreferencesStorage {
 }
 
 export class MockPreferenceStorage implements IPreferencesStorage {
-  name = 'mock'
+  configDirectory = ''
 
   private preferencesObject: { [key: string]: string } = {}
 
