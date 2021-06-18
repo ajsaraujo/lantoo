@@ -1,5 +1,5 @@
-import * as fs from 'fs-extra'
 import * as path from 'path'
+import { FileSystem, IFileSystem } from './file-system'
 
 export interface IPreferencesStorage {
   get(key: string): Promise<string>
@@ -13,6 +13,8 @@ export class PreferencesStorage implements IPreferencesStorage {
   private configObject: Record<string, string> = {}
 
   private configObjectWasLoaded = false
+
+  constructor(private fs: IFileSystem = new FileSystem()) {}
 
   set configDirectory(directory: string) {
     this.configFilePath = path.join(directory, 'config.json')
@@ -33,13 +35,13 @@ export class PreferencesStorage implements IPreferencesStorage {
 
   private async getConfigObject() {
     if (!this.configObjectWasLoaded) {
-      this.configObject = await fs.readJSON(this.configFilePath)
+      this.configObject = await this.fs.readJSON(this.configFilePath)
       this.configObjectWasLoaded = true
     }
   }
 
   private async writeConfigToFileSystem() {
-    await fs.writeJson(this.configFilePath, this.configObject)
+    await this.fs.writeJSON(this.configFilePath, this.configObject)
   }
 }
 

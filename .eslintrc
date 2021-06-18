@@ -2,6 +2,7 @@
   "extends": ["oclif", "oclif-typescript", "prettier"],
   "rules": {
     "no-useless-constructor": "off",
+    "no-return-assign": ["error", "except-parens"],
     "@typescript-eslint/interface-name-prefix": "off"
   }
 }
