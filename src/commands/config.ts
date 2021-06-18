@@ -1,13 +1,9 @@
-import Command from '@oclif/command'
 import { IConfig } from '@oclif/config'
 
-import 'reflect-metadata'
 import { container } from 'tsyringe'
 
-import {
-  PreferencesStorage,
-  GetPreferenceUseCase,
-} from '../modules/preferences'
+import { GetPreferenceUseCase } from '../modules/preferences'
+import Command from './base'
 
 export default class Config extends Command {
   static description = 'get/set user preferences'
@@ -43,11 +39,6 @@ export default class Config extends Command {
     if (!value) {
       await this.findKey(key)
     }
-  }
-
-  private initPreferencesStorage() {
-    const storage = container.resolve(PreferencesStorage)
-    storage.configDirectory = this.config.configDir
   }
 
   private async findKey(key: string) {
