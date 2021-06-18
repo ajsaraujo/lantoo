@@ -9,10 +9,10 @@ export default abstract class extends Command {
   async init() {
     await super.init()
 
-    this.passConfigDirectoryToPreferencesStorage()
+    this.setConfigFilePath()
   }
 
-  private passConfigDirectoryToPreferencesStorage() {
+  private setConfigFilePath() {
     const storage = container.resolve<IPreferencesStorage>('PreferencesStorage')
     storage.configDirectory = this.config.configDir
   }
