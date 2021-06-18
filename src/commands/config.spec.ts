@@ -1,19 +1,9 @@
 import { expect, test } from '@oclif/test'
-import { container } from 'tsyringe'
-import {
-  IPreferencesStorage,
-  MockPreferenceStorage,
-} from '../modules/preferences/preferences-storage'
-
-const resolve = container.resolve.bind(container)
-const storage = new MockPreferenceStorage()
-
-container.register<IPreferencesStorage>('PreferencesStorage', {
-  useClass: MockPreferenceStorage,
-})
+import { PreferencesStorage } from '../modules/preferences/preferences-storage'
 
 describe('config', () => {
   test
+    .stub(PreferencesStorage.prototype, 'get', () => undefined)
     .stdout()
     .command(['config', 'lang'])
     .it('should complain if no value is set', (ctx) => {
@@ -23,9 +13,8 @@ describe('config', () => {
       )
     })
 
-  storage.set('lang', 'pt-BR')
-
   test
+    .stub(PreferencesStorage.prototype, 'get', () => 'pt-BR')
     .stdout()
     .command(['config', 'lang'])
     .it('should retrieve a value from the storage if there is one', (ctx) => {
