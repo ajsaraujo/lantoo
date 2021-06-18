@@ -1,4 +1,5 @@
 import * as path from 'path'
+import assert from 'assert'
 import { FileSystem, IFileSystem } from './file-system'
 
 export interface IPreferencesStorage {
@@ -21,11 +22,16 @@ export class PreferencesStorage implements IPreferencesStorage {
   }
 
   async get(key: string): Promise<string> {
+    this.assertConfigFilePathIsDefined()
+
     await this.getConfigObject()
+
     return this.configObject[key]
   }
 
   async set(key: string, value: string): Promise<void> {
+    this.assertConfigFilePathIsDefined()
+
     await this.getConfigObject()
 
     this.configObject[key] = value
@@ -42,6 +48,10 @@ export class PreferencesStorage implements IPreferencesStorage {
 
   private async writeConfigToFileSystem() {
     await this.fs.writeJSON(this.configFilePath, this.configObject)
+  }
+
+  private assertConfigFilePathIsDefined() {
+    assert(this.configFilePath, 'Config file path is not defined')
   }
 }
 

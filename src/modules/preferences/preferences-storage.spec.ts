@@ -20,6 +20,7 @@ function setup() {
   fileSystem = new MockFileSystem()
   storage = new PreferencesStorage(fileSystem)
   writeSpy = sinon.spy(fileSystem, 'writeJSON')
+  storage.configDirectory = 'mock/path'
 }
 
 const test = fancy.do(setup)
