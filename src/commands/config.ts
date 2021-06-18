@@ -11,8 +11,6 @@ import Command from './base'
 export default class Config extends Command {
   static description = 'get/set user preferences'
 
-  static help = 'hi'
-
   static usage = 'config lang'
 
   static examples = ['$ lantoo config lang pt-BR', '$ lantoo config lang']
