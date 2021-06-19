@@ -5,6 +5,7 @@ import {
   SetPreferenceUseCase,
   possiblePreferences,
   Preference,
+  InvalidValueForPreferenceError,
 } from '../modules/preferences'
 
 import Command from './base'
@@ -53,11 +54,15 @@ export default class Config extends Command {
   }
 
   private handleSetPreferenceError(error: any, value: string) {
-    if (error.message === 'invalid_language') {
-      this.log(`❌ '${value}' is not a valid ISO 632-9 language code`)
-    } else {
-      throw error
+    if (error instanceof InvalidValueForPreferenceError) {
+      if (error.preference === 'lang') {
+        this.log(`❌ '${value}' is not a valid ISO 632-9 language code`)
+      }
+
+      return
     }
+
+    throw error
   }
 
   private async get(key: Preference) {

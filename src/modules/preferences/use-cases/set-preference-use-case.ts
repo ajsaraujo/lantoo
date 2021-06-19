@@ -3,6 +3,7 @@ import { I18n } from '../../../modules/i18n'
 
 import { IPreferencesStorage } from '../preferences-storage'
 import { Preference } from '../models'
+import { InvalidValueForPreferenceError } from '../errors/invalid-value-for-preference.error'
 
 @injectable()
 export class SetPreferenceUseCase {
@@ -23,7 +24,7 @@ export class SetPreferenceUseCase {
 
   private throwIfLanguageIsNotValid(value: string) {
     if (!this.i18n.isLanguageCode(value)) {
-      throw new Error('invalid_language')
+      throw new InvalidValueForPreferenceError('lang')
     }
   }
 }
