@@ -8,9 +8,8 @@ let fileSystem: MockFileSystem
 let writeSpy: SinonSpy
 
 class MockFileSystem implements IFileSystem {
-  async readJSON() {
-    return { lang: 'pt-BR' }
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async readJSON(): Promise<any> {}
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async writeJSON(_: string, __: any) {}
@@ -27,12 +26,18 @@ const test = fancy.do(setup)
 
 describe('PreferencesStorage', () => {
   test.it('should read JSON from file system', async () => {
+    sinon.stub(fileSystem, 'readJSON').resolves({ lang: 'pt-BR' })
+
     const value = await storage.get('lang')
+
     expect(value).to.equal('pt-BR')
   })
 
   test.it('should call write JSON on set', async () => {
+    sinon.stub(fileSystem, 'readJSON').resolves({})
+
     await storage.set('lang', 'en-US')
+
     expect(writeSpy.firstCall.lastArg).to.eql({ lang: 'en-US' })
   })
 
