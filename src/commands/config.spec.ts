@@ -45,4 +45,13 @@ describe('config', () => {
         expect(lang).to.equal('pt-BR')
       }
     )
+
+  setup
+    .stdout()
+    .command(['config', 'lang', 'dragonforce'])
+    .it('should complain if you pass an invalid language', async (ctx) => {
+      expect(ctx.stdout).to.include(
+        "❌ 'dragonforce' is not a valid ISO 632-9 language code"
+      )
+    })
 })

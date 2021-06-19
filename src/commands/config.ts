@@ -1,11 +1,12 @@
-import { IConfig } from '@oclif/config'
-
 import { container } from 'tsyringe'
 
 import {
   GetPreferenceUseCase,
   SetPreferenceUseCase,
+  possiblePreferences,
+  Preference,
 } from '../modules/preferences'
+
 import Command from './base'
 
 export default class Config extends Command {
@@ -20,7 +21,7 @@ export default class Config extends Command {
       name: 'key',
       required: true,
       description: 'the key to get/set',
-      options: ['lang'],
+      options: possiblePreferences,
     },
     {
       name: 'value',
@@ -40,14 +41,14 @@ export default class Config extends Command {
     }
   }
 
-  private async set(key: string, value: string) {
+  private async set(key: Preference, value: string) {
     const setPreference =
       container.resolve<SetPreferenceUseCase>(SetPreferenceUseCase)
 
     await setPreference.run(key, value)
   }
 
-  private async get(key: string) {
+  private async get(key: Preference) {
     const getPreference =
       container.resolve<GetPreferenceUseCase>(GetPreferenceUseCase)
 
