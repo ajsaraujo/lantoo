@@ -56,8 +56,11 @@ export default class Config extends Command {
     if (value) {
       this.log(value)
     } else {
-      this.log(`No value is set for the '${key}' key.\n`)
-      this.log(`To set one, run $ lantoo config lang <<value>>`)
+      this.log(
+        `No value is set for the '${key}' key.` +
+          '\n' +
+          'To set one, run $ lantoo config lang <<value>>'
+      )
     }
   }
 }
