@@ -41,7 +41,17 @@ export class PreferencesStorage implements IPreferencesStorage {
 
   private async getConfigObject() {
     if (!this.configObjectWasLoaded) {
-      this.configObject = await this.fs.readJSON(this.configFilePath)
+      try {
+        this.configObject = await this.fs.readJSON(this.configFilePath)
+      } catch (error) {
+        if (error.code === 'ENOENT') {
+          await this.fs.writeJSON(this.configFilePath, {})
+          this.configObject = {}
+        } else {
+          throw error
+        }
+      }
+
       this.configObjectWasLoaded = true
     }
   }

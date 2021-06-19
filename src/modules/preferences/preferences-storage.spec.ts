@@ -35,4 +35,15 @@ describe('PreferencesStorage', () => {
     await storage.set('lang', 'en-US')
     expect(writeSpy.firstCall.lastArg).to.eql({ lang: 'en-US' })
   })
+
+  test.it(
+    'should create an empy JSON file if one does not exist yet',
+    async () => {
+      sinon.stub(fileSystem, 'readJSON').throws({ code: 'ENOENT' })
+
+      await storage.get('lang')
+
+      expect(writeSpy.firstCall.lastArg).to.eql({})
+    }
+  )
 })
