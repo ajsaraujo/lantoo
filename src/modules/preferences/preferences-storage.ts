@@ -1,5 +1,6 @@
 import * as path from 'path'
 import assert from 'assert'
+
 import { FileSystem, IFileSystem } from './file-system'
 
 export interface IPreferencesStorage {
@@ -40,20 +41,36 @@ export class PreferencesStorage implements IPreferencesStorage {
   }
 
   private async getConfigObject() {
-    if (!this.configObjectWasLoaded) {
-      try {
-        this.configObject = await this.fs.readJSON(this.configFilePath)
-      } catch (error) {
-        if (error.code === 'ENOENT') {
-          await this.fs.writeJSON(this.configFilePath, {})
-          this.configObject = {}
-        } else {
-          throw error
-        }
-      }
-
-      this.configObjectWasLoaded = true
+    if (this.configObjectWasLoaded) {
+      return
     }
+
+    await this.loadConfigObject()
+
+    this.configObjectWasLoaded = true
+  }
+
+  private async loadConfigObject() {
+    try {
+      this.configObject = await this.fs.readJSON(this.configFilePath)
+    } catch (error) {
+      await this.handleReadJSONError(error)
+    }
+  }
+
+  private async handleReadJSONError(error: any) {
+    const configFileNotFound = error.code === 'ENOENT'
+
+    if (configFileNotFound) {
+      await this.createEmpyConfigFile()
+    } else {
+      throw error
+    }
+  }
+
+  private async createEmpyConfigFile() {
+    await this.fs.writeJSON(this.configFilePath, {})
+    this.configObject = {}
   }
 
   private async writeConfigToFileSystem() {
