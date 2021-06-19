@@ -14,6 +14,16 @@ export class SetPreferenceUseCase {
   ) {}
 
   async run(key: Preference, value: string) {
+    if (key === 'lang') {
+      this.throwIfLanguageIsNotValid(value)
+    }
+
     await this.preferencesStorage.set(key, value)
+  }
+
+  private throwIfLanguageIsNotValid(value: string) {
+    if (!this.i18n.isLanguageCode(value)) {
+      throw new Error('invalid_language')
+    }
   }
 }

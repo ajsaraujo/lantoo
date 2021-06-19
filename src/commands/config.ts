@@ -45,7 +45,19 @@ export default class Config extends Command {
     const setPreference =
       container.resolve<SetPreferenceUseCase>(SetPreferenceUseCase)
 
-    await setPreference.run(key, value)
+    try {
+      await setPreference.run(key, value)
+    } catch (error) {
+      this.handleSetPreferenceError(error, value)
+    }
+  }
+
+  private handleSetPreferenceError(error: any, value: string) {
+    if (error.message === 'invalid_language') {
+      this.log(`❌ '${value}' is not a valid ISO 632-9 language code`)
+    } else {
+      throw error
+    }
   }
 
   private async get(key: Preference) {
