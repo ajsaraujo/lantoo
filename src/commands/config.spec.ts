@@ -15,7 +15,7 @@ container.registerSingleton<IPreferencesStorage>(
 const storage: MockPreferenceStorage = container.resolve('PreferencesStorage')
 const setup = test.do(() => storage.clear())
 
-describe('config', () => {
+describe('config command', () => {
   setup
     .stdout()
     .command(['config', 'lang'])
