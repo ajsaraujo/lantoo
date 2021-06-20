@@ -67,4 +67,15 @@ describe('config', () => {
         expect(lang).to.equal('pt-BR')
       }
     )
+
+  setup
+    .stdout()
+    .command(['config', 'lang', 'pt-nr'])
+    .it('should give you a suggestion when you make a typo', async (ctx) => {
+      expect(ctx.stdout).to.include(
+        "❌ 'pt-nr' is not a valid ISO 632-9 language code"
+      )
+
+      expect(ctx.stdout).to.include("Did you mean 'pt-BR' ?")
+    })
 })
