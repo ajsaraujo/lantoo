@@ -15,16 +15,27 @@ export class SetPreferenceUseCase {
   ) {}
 
   async run(key: Preference, value: string) {
-    if (key === 'lang') {
-      this.throwIfLanguageIsNotValid(value)
+    const lang = this.fixCasing(value)
+
+    this.throwIfLanguageIsNotValid(lang)
+
+    await this.preferencesStorage.set(key, lang)
+  }
+
+  private fixCasing(languageCode: string) {
+    if (languageCode.includes('-')) {
+      const [firstPart, secondPart] = languageCode.split('-')
+      return `${firstPart.toLowerCase()}-${secondPart.toUpperCase()}`
     }
 
-    await this.preferencesStorage.set(key, value)
+    return languageCode.toLowerCase()
   }
 
   private throwIfLanguageIsNotValid(value: string) {
-    if (!this.i18n.isLanguageCode(value)) {
-      throw new InvalidValueForPreferenceError('lang')
+    if (this.i18n.isLanguageCode(value)) {
+      return
     }
+
+    throw new InvalidValueForPreferenceError('lang')
   }
 }

@@ -54,4 +54,17 @@ describe('config', () => {
         "❌ 'dragonforce' is not a valid ISO 632-9 language code"
       )
     })
+
+  setup
+    .stdout()
+    .command(['config', 'lang', 'pt-br'])
+    .it(
+      'should fix the casing when you pass a valid language with wrong casing',
+      async (ctx) => {
+        const lang = await storage.get('lang')
+
+        expect(ctx.stdout).to.be.empty
+        expect(lang).to.equal('pt-BR')
+      }
+    )
 })
