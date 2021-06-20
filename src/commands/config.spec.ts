@@ -7,7 +7,6 @@ import {
   MockPreferenceStorage,
 } from '../modules/preferences/preferences-storage'
 
-container.clearInstances()
 container.registerSingleton<IPreferencesStorage>(
   'PreferencesStorage',
   MockPreferenceStorage
