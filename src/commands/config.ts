@@ -14,7 +14,7 @@ export default class Config extends Command {
 
   static usage = 'config lang'
 
-  static examples = ['$ lantoo config lang pt-BR', '$ lantoo config lang']
+  static examples = ['$ lantoo config lang pt-br', '$ lantoo config lang']
 
   static args = [
     {
