@@ -1,5 +1,4 @@
 import { container } from 'tsyringe'
-
 import {
   GetPreferenceUseCase,
   SetPreferenceUseCase,

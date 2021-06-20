@@ -1,5 +1,7 @@
 import { expect, test } from '@oclif/test'
+
 import { container } from 'tsyringe'
+
 import {
   IPreferencesStorage,
   MockPreferenceStorage,

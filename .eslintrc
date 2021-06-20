@@ -1,5 +1,10 @@
 {
-  "extends": ["oclif", "oclif-typescript", "prettier"],
+  "extends": [
+    "@rocket.chat/eslint-config",
+    "prettier",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/eslint-recommended"
+  ],
   "rules": {
     "no-useless-constructor": "off",
     "no-return-assign": ["error", "except-parens"],
