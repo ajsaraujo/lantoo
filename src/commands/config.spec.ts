@@ -76,6 +76,6 @@ describe('config', () => {
         "❌ 'pt-nr' is not a valid ISO 632-9 language code"
       )
 
-      expect(ctx.stdout).to.include("Did you mean 'pt-BR' ?")
+      expect(ctx.stdout).to.include("Did you mean 'pt-BR'?")
     })
 })

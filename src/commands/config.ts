@@ -55,8 +55,10 @@ export default class Config extends Command {
 
   private handleSetPreferenceError(error: any, value: string) {
     if (error instanceof InvalidValueForPreferenceError) {
-      if (error.preference === 'lang') {
-        this.log(`❌ '${value}' is not a valid ISO 632-9 language code`)
+      this.log(`❌ '${value}' is not a valid ISO 632-9 language code`)
+
+      if (error.suggestion) {
+        this.log(`🤔 Did you mean '${error.suggestion}'?`)
       }
 
       return

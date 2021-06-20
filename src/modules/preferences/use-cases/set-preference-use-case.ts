@@ -7,28 +7,18 @@ import { InvalidValueForPreferenceError } from '../errors/invalid-value-for-pref
 
 @injectable()
 export class SetPreferenceUseCase {
-  private i18n = new I18n()
-
   constructor(
     @inject('PreferencesStorage')
-    private preferencesStorage: IPreferencesStorage
+    private preferencesStorage: IPreferencesStorage,
+    private i18n: I18n
   ) {}
 
   async run(key: Preference, value: string) {
-    const lang = this.fixCasing(value)
+    const lang = this.i18n.fixCasing(value)
 
     this.throwIfLanguageIsNotValid(lang)
 
     await this.preferencesStorage.set(key, lang)
-  }
-
-  private fixCasing(languageCode: string) {
-    if (languageCode.includes('-')) {
-      const [firstPart, secondPart] = languageCode.split('-')
-      return `${firstPart.toLowerCase()}-${secondPart.toUpperCase()}`
-    }
-
-    return languageCode.toLowerCase()
   }
 
   private throwIfLanguageIsNotValid(value: string) {
@@ -36,6 +26,8 @@ export class SetPreferenceUseCase {
       return
     }
 
-    throw new InvalidValueForPreferenceError('lang')
+    const suggestion = this.i18n.findSimilarLanguageCode(value)
+
+    throw new InvalidValueForPreferenceError('lang', suggestion)
   }
 }

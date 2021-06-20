@@ -10,7 +10,11 @@ export class I18n {
     return validLanguages.includes(str)
   }
 
-  public fixCasing(languageCode: string) {
+  findSimilarLanguageCode(language: string) {
+    return this.fuzzy.search(validLanguages, language)
+  }
+
+  fixCasing(languageCode: string) {
     if (languageCode.includes('-')) {
       const [firstPart, secondPart] = languageCode.split('-')
       return `${firstPart.toLowerCase()}-${secondPart.toUpperCase()}`
