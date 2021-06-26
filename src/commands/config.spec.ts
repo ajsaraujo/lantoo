@@ -5,7 +5,7 @@ import { container } from 'tsyringe'
 import {
   IPreferencesStorage,
   MockPreferenceStorage,
-} from '../modules/preferences/preferences-storage'
+} from '../modules/preferences/storage/preferences-storage'
 
 container.registerSingleton<IPreferencesStorage>(
   'PreferencesStorage',

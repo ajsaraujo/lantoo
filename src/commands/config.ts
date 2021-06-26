@@ -1,8 +1,7 @@
 import { container } from 'tsyringe'
 import {
-  GetPreferenceUseCase,
-  SetPreferenceUseCase,
   possiblePreferences,
+  Preferences,
   Preference,
   InvalidValueForPreferenceError,
 } from '../modules/preferences'
@@ -42,11 +41,10 @@ export default class Config extends Command {
   }
 
   private async set(key: Preference, value: string) {
-    const setPreference =
-      container.resolve<SetPreferenceUseCase>(SetPreferenceUseCase)
+    const preferences = container.resolve<Preferences>(Preferences)
 
     try {
-      await setPreference.run(key, value)
+      await preferences.set(key, value)
     } catch (error) {
       this.handleSetPreferenceError(error, value)
     }
@@ -67,10 +65,9 @@ export default class Config extends Command {
   }
 
   private async get(key: Preference) {
-    const getPreference =
-      container.resolve<GetPreferenceUseCase>(GetPreferenceUseCase)
+    const preferences = container.resolve<Preferences>(Preferences)
 
-    const value = await getPreference.run(key)
+    const value = await preferences.get(key)
 
     if (value) {
       this.log(value)

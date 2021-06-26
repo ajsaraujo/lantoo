@@ -1,4 +1,4 @@
-import { Preference } from '../models'
+import { Preference } from '../preferences'
 
 export class InvalidValueForPreferenceError extends Error {
   constructor(public preference: Preference, public suggestion?: string) {
