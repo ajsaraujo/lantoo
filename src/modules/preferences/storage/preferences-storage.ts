@@ -1,7 +1,7 @@
 import * as path from 'path'
 import assert from 'assert'
 
-import { FileSystem, IFileSystem } from './file-system'
+import { FileSystem, IFileSystem } from '../../shared/file-system'
 
 export interface IPreferencesStorage {
   get(key: string): Promise<string>
@@ -16,9 +16,7 @@ export class PreferencesStorage implements IPreferencesStorage {
 
   private configObjectWasLoaded = false
 
-  constructor(private fs: IFileSystem = new FileSystem()) {
-    //
-  }
+  constructor(private fs: IFileSystem = new FileSystem()) {}
 
   set configDirectory(directory: string) {
     this.configFilePath = path.join(directory, 'config.json')
@@ -54,9 +52,7 @@ export class PreferencesStorage implements IPreferencesStorage {
 
   private async loadConfigObject() {
     try {
-      this.configObject = (await this.fs.readJSON(
-        this.configFilePath
-      )) as Record<string, string>
+      this.configObject = await this.fs.readJSON(this.configFilePath)
     } catch (error) {
       await this.handleReadJSONError(error)
     }
@@ -66,13 +62,13 @@ export class PreferencesStorage implements IPreferencesStorage {
     const configFileNotFound = error.code === 'ENOENT'
 
     if (configFileNotFound) {
-      await this.createEmptyConfigFile()
+      await this.createEmpyConfigFile()
     } else {
       throw error
     }
   }
 
-  private async createEmptyConfigFile() {
+  private async createEmpyConfigFile() {
     await this.fs.writeJSON(this.configFilePath, {})
     this.configObject = {}
   }
@@ -91,15 +87,15 @@ export class MockPreferenceStorage implements IPreferencesStorage {
 
   private preferencesObject: { [key: string]: string } = {}
 
-  async get(key: string): Promise<string> {
+  async get(key: string) {
     return this.preferencesObject[key]
   }
 
-  async set(key: string, value: string): Promise<void> {
+  async set(key: string, value: string) {
     this.preferencesObject[key] = value
   }
 
-  clear(): void {
+  clear() {
     this.preferencesObject = {}
   }
 }
