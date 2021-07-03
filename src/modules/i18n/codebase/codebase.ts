@@ -11,43 +11,43 @@ import { ITranslationFiles } from './translation-files'
  */
 @injectable()
 export class Codebase {
-  constructor(
-    @inject('CodeParser') private codeParser: ICodeParser,
-    @inject('TranslationFiles') private translationFiles: ITranslationFiles
-  ) {}
+	constructor(
+		@inject('CodeParser') private codeParser: ICodeParser,
+		@inject('TranslationFiles') private translationFiles: ITranslationFiles,
+	) {}
 
-  async getUntranslatedKeys(language: string) {
-    const keys = await this.getAllKeys(language)
-    return keys.filter((key) => key.isUntranslated)
-  }
+	async getUntranslatedKeys(language: string) {
+		const keys = await this.getAllKeys(language)
+		return keys.filter((key) => key.isUntranslated)
+	}
 
-  async getUnusedKeys(language: string) {
-    const keys = await this.getAllKeys(language)
-    return keys.filter((key) => key.isUnused)
-  }
+	async getUnusedKeys(language: string) {
+		const keys = await this.getAllKeys(language)
+		return keys.filter((key) => key.isUnused)
+	}
 
-  async getKey(
-    key: string,
-    language: string
-  ): Promise<TranslationKey | undefined> {
-    const occurrence = await this.codeParser.getKeyOccurrence(key)
-    const translation = await this.translationFiles.getTranslation(
-      key,
-      language
-    )
+	async getKey(
+		key: string,
+		language: string,
+	): Promise<TranslationKey | undefined> {
+		const occurrence = await this.codeParser.getKeyOccurrence(key)
+		const translation = await this.translationFiles.getTranslation(
+			key,
+			language,
+		)
 
-    const result = TranslationKey.create(translation, occurrence)
+		const result = TranslationKey.create(translation, occurrence)
 
-    if (result.isFailure) {
-      return undefined
-    }
+		if (result.isFailure) {
+			return undefined
+		}
 
-    return result.value
-  }
+		return result.value
+	}
 
-  private async getAllKeys(language: string): Promise<TranslationKey[]> {
-    const occurrences = await this.codeParser.getKeyOccurrences()
-    const translations = await this.translationFiles.getTranslations(language)
-    return new KeyAssembler(occurrences, translations).assemble()
-  }
+	private async getAllKeys(language: string): Promise<TranslationKey[]> {
+		const occurrences = await this.codeParser.getKeyOccurrences()
+		const translations = await this.translationFiles.getTranslations(language)
+		return new KeyAssembler(occurrences, translations).assemble()
+	}
 }

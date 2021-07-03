@@ -12,6 +12,8 @@
     }
   },
   "rules": {
+    "semi": "off",
+    "linebreak-style": "off",
     "no-return-assign": ["error", "except-parens"],
     "@typescript-eslint/interface-name-prefix": "off",
 

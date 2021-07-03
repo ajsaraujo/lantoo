@@ -1,46 +1,48 @@
 export type ResultOrError<T> = [T, Error]
 
 export class Result<T> {
-  isSuccess: boolean
-  isFailure: boolean
-  error?: string
+	isSuccess: boolean
 
-  private _value?: T
+	isFailure: boolean
 
-  private constructor(isSuccess: boolean, error?: string, value?: T) {
-    if (isSuccess && error) {
-      throw new Error(
-        'InvalidOperation: a successful result cannot contain an error'
-      )
-    }
+	error?: string
 
-    if (!isSuccess && !error) {
-      throw new Error(
-        'InvalidOperation: an unsuccessful result should contain an error'
-      )
-    }
+	private _value?: T
 
-    this.isSuccess = isSuccess
-    this.isFailure = !isSuccess
-    this.error = error
-    this._value = value
+	private constructor(isSuccess: boolean, error?: string, value?: T) {
+		if (isSuccess && error) {
+			throw new Error(
+				'InvalidOperation: a successful result cannot contain an error',
+			)
+		}
 
-    Object.freeze(this)
-  }
+		if (!isSuccess && !error) {
+			throw new Error(
+				'InvalidOperation: an unsuccessful result should contain an error',
+			)
+		}
 
-  static ok<U>(value: U): Result<U> {
-    return new Result<U>(true, undefined, value)
-  }
+		this.isSuccess = isSuccess
+		this.isFailure = !isSuccess
+		this.error = error
+		this._value = value
 
-  static fail<U>(error: string): Result<U> {
-    return new Result<U>(false, error)
-  }
+		Object.freeze(this)
+	}
 
-  get value(): T {
-    if (!this.isSuccess) {
-      throw new Error('Cannot retrieve value from unsuccessful result')
-    }
+	static ok<U>(value: U): Result<U> {
+		return new Result<U>(true, undefined, value)
+	}
 
-    return this._value as T
-  }
+	static fail<U>(error: string): Result<U> {
+		return new Result<U>(false, error)
+	}
+
+	get value(): T {
+		if (!this.isSuccess) {
+			throw new Error('Cannot retrieve value from unsuccessful result')
+		}
+
+		return this._value as T
+	}
 }
