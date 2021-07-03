@@ -16,12 +16,12 @@ export class Codebase {
 		@inject('TranslationFiles') private translationFiles: ITranslationFiles,
 	) {}
 
-	async getUntranslatedKeys(language: string) {
+	async getUntranslatedKeys(language: string): Promise<TranslationKey[]> {
 		const keys = await this.getAllKeys(language)
 		return keys.filter((key) => key.isUntranslated)
 	}
 
-	async getUnusedKeys(language: string) {
+	async getUnusedKeys(language: string): Promise<TranslationKey[]> {
 		const keys = await this.getAllKeys(language)
 		return keys.filter((key) => key.isUnused)
 	}

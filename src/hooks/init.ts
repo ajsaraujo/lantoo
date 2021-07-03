@@ -11,7 +11,7 @@ import {
 	MockTranslationFiles,
 } from '../modules/i18n/codebase/translation-files'
 
-function registerSingletons() {
+function registerSingletons(): void {
 	container.register<IFuzzyFinder>('FuzzyFinder', FuzzyFinder)
 
 	// Don't register the singletons below in test environment

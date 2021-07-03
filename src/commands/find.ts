@@ -33,7 +33,7 @@ export default class Find extends Command {
 
 	private language?: string
 
-	async run() {
+	async run(): Promise<void> {
 		const { args, flags } = this.parse(Find)
 
 		this.language = await this.parseLanguageOptionOrGetFromPreferences(
@@ -78,12 +78,8 @@ export default class Find extends Command {
 	}
 
 	private sayKeyIsUntranslated(key: TranslationKey) {
-		this.log(
-			`\n⚠️  ${ key.key } is UNTRANSLATED.\n\n`
-        + `${ this.formatCodebaseReference(
-        	key,
-        ) }, but it doesn't have a translation in ${ this.language }.`,
-		)
+		this.log(`\n⚠️  ${ key.key } is UNTRANSLATED.`)
+		this.log(`${ this.formatCodebaseReference(key) }, but it doesn't have a translation in ${ this.language }`)
 	}
 
 	private formatCodebaseReference(key: TranslationKey) {

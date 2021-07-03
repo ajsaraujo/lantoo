@@ -7,15 +7,15 @@ import validLanguages from './valid-languages'
 export class LanguageUtils {
 	constructor(@inject('FuzzyFinder') private fuzzy: FuzzyFinder) {}
 
-	isLanguageCode(str: string) {
+	isLanguageCode(str: string): boolean {
 		return validLanguages.includes(this.fixCasing(str))
 	}
 
-	findSimilarLanguageCode(language: string) {
+	findSimilarLanguageCode(language: string): string | undefined {
 		return this.fuzzy.search(validLanguages, language)
 	}
 
-	fixCasing(languageCode: string) {
+	fixCasing(languageCode: string): string {
 		if (languageCode.includes('-')) {
 			const [firstPart, secondPart] = languageCode.split('-')
 			return `${ firstPart.toLowerCase() }-${ secondPart.toUpperCase() }`

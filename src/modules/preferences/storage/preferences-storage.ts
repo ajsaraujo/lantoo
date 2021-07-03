@@ -52,7 +52,7 @@ export class PreferencesStorage implements IPreferencesStorage {
 
 	private async loadConfigObject() {
 		try {
-			this.configObject = await this.fs.readJSON(this.configFilePath)
+			this.configObject = await this.fs.readJSON(this.configFilePath) as Record<string, string>
 		} catch (error) {
 			await this.handleReadJSONError(error)
 		}
@@ -62,13 +62,13 @@ export class PreferencesStorage implements IPreferencesStorage {
 		const configFileNotFound = error.code === 'ENOENT'
 
 		if (configFileNotFound) {
-			await this.createEmpyConfigFile()
+			await this.createEmptyConfigFile()
 		} else {
 			throw error
 		}
 	}
 
-	private async createEmpyConfigFile() {
+	private async createEmptyConfigFile() {
 		await this.fs.writeJSON(this.configFilePath, {})
 		this.configObject = {}
 	}
@@ -87,15 +87,15 @@ export class MockPreferenceStorage implements IPreferencesStorage {
 
 	private preferencesObject: { [key: string]: string } = {}
 
-	async get(key: string) {
+	async get(key: string): Promise<string> {
 		return this.preferencesObject[key]
 	}
 
-	async set(key: string, value: string) {
+	async set(key: string, value: string): Promise<void> {
 		this.preferencesObject[key] = value
 	}
 
-	clear() {
+	clear(): void {
 		this.preferencesObject = {}
 	}
 }

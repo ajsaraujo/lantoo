@@ -48,11 +48,11 @@ export class TranslationKey {
 		return Result.ok(new TranslationKey(translation, occurrence))
 	}
 
-	get isUnused() {
+	get isUnused(): boolean {
 		return this.state === KeyState.Unused
 	}
 
-	get isUntranslated() {
+	get isUntranslated(): boolean {
 		return this.state === KeyState.Untranslated
 	}
 

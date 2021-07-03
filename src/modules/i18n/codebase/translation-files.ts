@@ -27,9 +27,9 @@ export class TranslationFiles implements ITranslationFiles {
 	async getTranslations(
 		language: string,
 	): Promise<Record<string, Translation>> {
-		const json: Record<string, string> = await this.fileSystem.readJSON(
+		const json = await this.fileSystem.readJSON(
 			language,
-		)
+		) as Record<string, string>
 
 		const map: Record<string, Translation> = {}
 
@@ -42,7 +42,7 @@ export class TranslationFiles implements ITranslationFiles {
 }
 
 export class MockTranslationFiles extends TranslationFiles {
-	async getTranslations(language: string) {
+	async getTranslations(_: string): Promise<Record<string, Translation>> {
 		return {
 			Page_title: new Translation('Page_title', 'Título da Página'),
 			away_female: new Translation('away_female', 'Ausente'),

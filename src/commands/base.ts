@@ -7,7 +7,7 @@ import { IPreferencesStorage, Preferences } from '../modules/preferences'
 import { LanguageUtils } from '../modules/i18n'
 
 export default abstract class extends Command {
-	async init() {
+	async init(): Promise<void> {
 		await super.init()
 
 		this.setConfigFilePath()
