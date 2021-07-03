@@ -83,11 +83,12 @@
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "ts-mocha --paths -p tsconfig.json src/**/*.spec.ts --bail",
     "coverage": "nyc --extension .ts mocha --forbid-only \"src/**/*.spec.ts\"",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme && git add README.md",
+    "lint": "eslint src/**/*.ts --fix"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "pretty-quick --staged && npm run lint"
     }
   },
   "types": "lib/index.d.ts"
