@@ -1,13 +1,59 @@
 {
   "extends": [
-    "@rocket.chat/eslint-config",
     "prettier",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/eslint-recommended"
+    "@rocket.chat/eslint-config"
   ],
+  "parser": "@typescript-eslint/parser",
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "rules": {
-    "no-useless-constructor": "off",
     "no-return-assign": ["error", "except-parens"],
-    "@typescript-eslint/interface-name-prefix": "off"
-  }
+    "@typescript-eslint/interface-name-prefix": "off",
+
+    "func-call-spacing": "off",
+    "jsx-quotes": [
+      "error",
+      "prefer-single"
+    ],
+    "indent": "off",
+    "no-extra-parens": "off",
+    "no-spaced-func": "off",
+    "no-unused-vars": "off",
+    "no-useless-constructor": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/indent": [
+      "error",
+      "tab",
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "@typescript-eslint/no-extra-parens": [
+      "error",
+      "all",
+      {
+        "conditionalAssign": true,
+        "nestedBinaryExpressions": false,
+        "returnAssign": true,
+        "ignoreJSX": "all",
+        "enforceForArrowConditionals": false
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": ["error", {
+      "argsIgnorePattern": "^_"
+    }]
+  },
+  "overrides": [{
+    "files": ["*.spec.ts"],
+    "env": {
+      "mocha": true
+    }
+  }]
 }
