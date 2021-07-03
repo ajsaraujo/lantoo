@@ -83,7 +83,7 @@ export class PreferencesStorage implements IPreferencesStorage {
 }
 
 export class MockPreferenceStorage implements IPreferencesStorage {
-	configDirectory = ''
+	configDirectory = ""
 
 	private preferencesObject: { [key: string]: string } = {}
 
