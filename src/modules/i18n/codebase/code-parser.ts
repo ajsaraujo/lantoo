@@ -1,11 +1,9 @@
+import { singleton } from 'tsyringe'
+
 import { KeyOccurrence } from '../models/translation-key'
 
-export interface ICodeParser {
-	getKeyOccurrence(key: string): Promise<KeyOccurrence | undefined>
-	getKeyOccurrences(): Promise<KeyOccurrence[]>
-}
-
-export class MockCodeParser implements ICodeParser {
+@singleton()
+export class CodeParser {
 	async getKeyOccurrence(key: string): Promise<KeyOccurrence | undefined> {
 		const occurrences = await this.getKeyOccurrences()
 		return occurrences.find((occurrence) => occurrence.key === key)
@@ -18,3 +16,5 @@ export class MockCodeParser implements ICodeParser {
 		]
 	}
 }
+
+export class MockCodeParser extends CodeParser {}

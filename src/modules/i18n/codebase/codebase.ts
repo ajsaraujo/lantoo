@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe'
 
 import { TranslationKey } from '../models/translation-key'
-import { ICodeParser } from './code-parser'
+import { CodeParser } from './code-parser'
 import { KeyAssembler } from './key-assembler'
 import { ITranslationFiles } from './translation-files'
 
@@ -12,7 +12,7 @@ import { ITranslationFiles } from './translation-files'
 @injectable()
 export class Codebase {
 	constructor(
-		@inject('CodeParser') private codeParser: ICodeParser,
+		private codeParser: CodeParser,
 		@inject('TranslationFiles') private translationFiles: ITranslationFiles,
 	) {}
 

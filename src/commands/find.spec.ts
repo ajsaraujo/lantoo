@@ -2,7 +2,7 @@ import { expect, test } from '@oclif/test'
 import { container } from 'tsyringe'
 import sinon from 'sinon'
 
-import { ICodeParser, MockCodeParser } from '@modules/i18n/codebase/code-parser'
+import { CodeParser, MockCodeParser } from '@modules/i18n/codebase/code-parser'
 import { KeyOccurrence } from '@modules/i18n/models/translation-key'
 import { IFileSystem, MockFileSystem } from '@modules/shared'
 import {
@@ -20,7 +20,7 @@ let codeParser: MockCodeParser
 const prepare = test.do(() => {
 	container.reset()
 
-	container.registerSingleton<ICodeParser>('CodeParser', MockCodeParser)
+	container.registerSingleton<CodeParser>(CodeParser, MockCodeParser)
 	container.registerSingleton<IFileSystem>('FileSystem', MockFileSystem)
 	container.registerSingleton<IPreferencesStorage>(
 		'PreferencesStorage',
@@ -32,7 +32,7 @@ const prepare = test.do(() => {
 	)
 
 	fileSystem = container.resolve('FileSystem')
-	codeParser = container.resolve('CodeParser')
+	codeParser = container.resolve(CodeParser)
 })
 
 function setup(
