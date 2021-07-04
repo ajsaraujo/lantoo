@@ -31,7 +31,7 @@ export default class Find extends Command {
 		unused: flags.boolean(),
 	}
 
-	private language?: string
+	private language!: string
 
 	async run(): Promise<void> {
 		const { args, flags } = this.parse(Find)
@@ -51,7 +51,7 @@ export default class Find extends Command {
 
 	private async findOne(key: string) {
 		const codebase: Codebase = container.resolve(Codebase)
-		const translationKey = await codebase.getKey(key, 'pt-BR')
+		const translationKey = await codebase.getKey(key, this.language)
 
 		if (!translationKey) {
 			this.log(`⚠️  ${ key } was not found.`)
