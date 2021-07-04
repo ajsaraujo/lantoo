@@ -1,10 +1,8 @@
 import Fuse from 'fuse.js'
+import { singleton } from 'tsyringe'
 
-export interface IFuzzyFinder {
-	search<T>(items: T[], query: string): T | undefined
-}
-
-export class FuzzyFinder implements IFuzzyFinder {
+@singleton()
+export class FuzzyFinder {
 	search<T>(items: T[], query: string): T | undefined {
 		const fuzzy = new Fuse(items, { includeScore: true })
 		const matches = fuzzy.search(query)

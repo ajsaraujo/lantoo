@@ -1,11 +1,11 @@
-import { inject, injectable } from 'tsyringe'
+import { injectable } from 'tsyringe'
 
 import { FuzzyFinder } from './fuzzy-finder'
 import validLanguages from './valid-languages'
 
 @injectable()
 export class LanguageUtils {
-	constructor(@inject('FuzzyFinder') private fuzzy: FuzzyFinder) {}
+	constructor(private fuzzy: FuzzyFinder) {}
 
 	isLanguageCode(str: string): boolean {
 		return validLanguages.includes(this.fixCasing(str))
