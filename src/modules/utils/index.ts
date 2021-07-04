@@ -1,5 +1,8 @@
 export type ResultOrError<T> = [T, Error]
 
+/**
+ * Courtesy of [Khalil Stemmler](https://khalilstemmler.com/articles/enterprise-typescript-nodejs/handling-errors-result-class/)
+ */
 export class Result<T> {
 	isSuccess: boolean
 
