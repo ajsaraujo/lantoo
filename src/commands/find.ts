@@ -95,7 +95,7 @@ export default class Find extends Command {
 
 	private async findUntranslatedKeys() {
 		const codebase: Codebase = container.resolve(Codebase)
-		const keys = await codebase.getUntranslatedKeys(this.language as string)
+		const keys = await codebase.getUntranslatedKeys(this.language)
 
 		this.log(
 			`Found ${ this.pluralize(keys.length, 'key') } lacking translation in ${
@@ -108,7 +108,7 @@ export default class Find extends Command {
 
 	private async findUnusedKeys() {
 		const codebase: Codebase = container.resolve(Codebase)
-		const keys = await codebase.getUnusedKeys(this.language as string)
+		const keys = await codebase.getUnusedKeys(this.language)
 
 		this.log(
 			`Found ${ this.pluralize(keys.length, 'unused key') } in ${
