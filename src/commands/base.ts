@@ -29,7 +29,7 @@ export default abstract class extends Command {
 
 		if (!preferredLanguage) {
 			await this.setPreferredLanguageToEnUs()
-			preferredLanguage = 'en-US'
+			preferredLanguage = 'en'
 		}
 
 		return preferredLanguage
