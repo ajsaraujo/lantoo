@@ -1,8 +1,8 @@
 import { flags } from '@oclif/parser'
 import { container } from 'tsyringe'
+import * as inquirer from 'inquirer';
 
-import { ITranslationFiles } from '@modules/i18n/codebase/translation-files'
-
+import { ITranslationFiles } from '../modules/i18n/codebase/translation-files';
 import Command from './base'
 
 export default class Translate extends Command {
@@ -51,5 +51,15 @@ export default class Translate extends Command {
 		this.log(`✔️ '${ key }':'${ value }' was added to the ${ this.language } translation file.`)
 	}
 
-	private runInteractiveMode() {}
+	private async runInteractiveMode() {
+		const EXISTING_KEYS = 0;
+		const BRAND_NEW_KEYS = 1;
+
+		const responses = await inquirer.prompt([{
+			name: 'mode',
+			message: 'what do you want to do?',
+			type: 'list',
+			choices: [{ name: 'add translations to existing untranslated keys', value: EXISTING_KEYS }, { name: 'add brand new translation keys', value: BRAND_NEW_KEYS }],
+		}]);
+	}
 }
