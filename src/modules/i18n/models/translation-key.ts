@@ -27,6 +27,7 @@ export class TranslationKey {
 		this.key = (translation?.key || occurrence?.key) as string
 		this.referenceInCodebase = occurrence?.file
 		this.translation = translation?.value
+
 		this.state = this.computeState(translation, occurrence)
 	}
 

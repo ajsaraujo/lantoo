@@ -36,7 +36,7 @@ export default class Find extends Command {
 	async run(): Promise<void> {
 		const { args, flags } = this.parse(Find)
 
-		this.language = await this.parseLanguageOptionOrGetFromPreferences(
+		this.language = await this.parseLanguageFlagOrGetFromPreferences(
 			flags.lang,
 		)
 
@@ -72,17 +72,17 @@ export default class Find extends Command {
 	private sayKeyIsOk(key: TranslationKey) {
 		this.log(
 			`\n${ key.key } is OK.\n\n`
-        + `✔️  ${ this.formatCodebaseReference(key) }\n`
+        + `✔️  ${ this.codebaseReference(key) }\n`
         + `✔️  It has a translation in ${ this.language }: '${ key.translation }'`,
 		)
 	}
 
 	private sayKeyIsUntranslated(key: TranslationKey) {
 		this.log(`\n⚠️  ${ key.key } is UNTRANSLATED.`)
-		this.log(`${ this.formatCodebaseReference(key) }, but it doesn't have a translation in ${ this.language }`)
+		this.log(`${ this.codebaseReference(key) }, but it doesn't have a translation in ${ this.language }`)
 	}
 
-	private formatCodebaseReference(key: TranslationKey) {
+	private codebaseReference(key: TranslationKey) {
 		return `It is referenced in the codebase (found in ${ key.referenceInCodebase })`
 	}
 

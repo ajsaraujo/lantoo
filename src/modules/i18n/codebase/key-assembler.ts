@@ -37,11 +37,9 @@ export class KeyAssembler {
 		for (const translation of Object.values(this.translations)) {
 			const { key } = translation
 
-			if (this.keys.has(key)) {
-				continue
+			if (!this.keys.has(key)) {
+				this.createTranslationKey(key, translation)
 			}
-
-			this.createTranslationKey(key, translation)
 		}
 	}
 
