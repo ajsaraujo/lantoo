@@ -13,7 +13,13 @@ export default abstract class extends Command {
 		this.setConfigFilePath()
 	}
 
-	protected async parseLanguageOptionOrGetFromPreferences(
+	/**
+	 * Parses the language (--lang) flag. If it was not passed
+	 * or it is invalid, the default language is fetched from
+	 * preferences. If no language is set in the preferences,
+	 * en-US is returned.
+	 */
+	protected async parseLanguageFlagOrGetFromPreferences(
 		language: string | undefined,
 	): Promise<string> {
 		if (language) {
