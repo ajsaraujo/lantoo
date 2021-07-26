@@ -42,7 +42,7 @@ export default class Translate extends Command {
 		if (interactive) {
 			await this.runInteractiveMode();
 		} else {
-			this.addTranslation(key as string, value as string);
+			await this.addTranslation(key as string, value as string);
 		}
 	}
 
@@ -66,7 +66,10 @@ export default class Translate extends Command {
 			name: 'mode',
 			message: 'what do you want to do?',
 			type: 'list',
-			choices: [{ name: 'add translations to existing untranslated keys', value: EXISTING_KEYS }, { name: 'add brand new translation keys', value: BRAND_NEW_KEYS }],
+			choices: [
+				{ name: 'add translations to existing untranslated keys', value: EXISTING_KEYS }, 
+				{ name: 'add brand new translation keys', value: BRAND_NEW_KEYS }
+			],
 		}]);
 
 		if (response.mode === EXISTING_KEYS) {
