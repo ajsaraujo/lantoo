@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { flags } from '@oclif/parser'
 import { container } from 'tsyringe'
 import * as inquirer from 'inquirer';
@@ -75,7 +76,55 @@ export default class Translate extends Command {
 		}
 	}
 
-	private addNewTranslationKeys() {}
+	private async addNewTranslationKeys() {
+		const translationFiles: ITranslationFiles = container.resolve('TranslationFiles');
+
+		this.log(`\nAdding new translations to the ${ this.language } translation file.`);
+		this.log('Enter Q at any moment to finish entering keys.\n');
+
+		let translationsAdded = 0;
+
+		// eslint-disable-next-line no-constant-condition
+		while (true) {
+			const { key } = await inquirer.prompt([
+				{
+					name: 'key',
+					message: 'key',
+					type: 'input',
+				},
+			])
+
+			if (key.trim().toUpperCase() === 'Q') {
+				break;
+			}
+
+			const { value } = await inquirer.prompt([
+				{
+					name: 'value',
+					message: 'value',
+					type: 'input',
+				},
+			]);
+
+			if (value.trim().toUpperCase() === 'Q') {
+				break;
+			}
+
+			await translationFiles.addTranslation(key, value, this.language);
+
+			translationsAdded++;
+
+			this.log('\nAdded successfully! Enter the next one or Q to quit.');
+		}
+
+		if (translationsAdded === 0) {
+			this.log('\nNo translations were added.');
+		} else if (translationsAdded === 1) {
+			this.log('\nAdded one new translation.');
+		} else {
+			this.log(`\nAdded ${ translationsAdded } new translations.`);
+		}
+	}
 
 	private async addTranslationsToExistingKeys() {
 		const codebase = container.resolve(Codebase);
@@ -86,13 +135,12 @@ export default class Translate extends Command {
 			return;
 		}
 
-		this.log(`Found ${untranslatedKeys.length} untranslated key(s).`);
+		this.log(`Found ${ untranslatedKeys.length } untranslated key(s).`);
 		this.log('Leave the translation empty to skip a key. Enter Q to quit.');
 
 		let newTranslations = 0;
 
 		for (const { key } of untranslatedKeys) {
-			// eslint-disable-next-line no-await-in-loop
 			const response = await inquirer.prompt([{
 				name: 'translation',
 				message: key,
@@ -113,7 +161,6 @@ export default class Translate extends Command {
 
 			const translationFiles: ITranslationFiles = container.resolve('TranslationFiles');
 
-			// eslint-disable-next-line no-await-in-loop
 			await translationFiles.addTranslation(key, translation, this.language);
 
 			newTranslations++;
