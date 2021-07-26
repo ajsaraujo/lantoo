@@ -19,7 +19,7 @@ export default class Translate extends Command {
 	]
 
 	static flags = {
-  	lang: flags.string({ char: 'l' }),
+		lang: flags.string({ char: 'l' }),
 		key: flags.string({ char: 'k' }),
 		interactive: flags.boolean({ char: 'i' }),
 		value: flags.string({ char: 'v' }),
