@@ -72,7 +72,6 @@ export class MockTranslationFiles extends TranslationFiles {
 
 	async getTranslations(_: string): Promise<Record<string, Translation>> {
 		return {
-			Page_title: new Translation('Page_title', 'Título da Página'),
 			away_female: new Translation('away_female', 'Ausente'),
 		}
 	}
