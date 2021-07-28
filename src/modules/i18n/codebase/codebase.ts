@@ -16,6 +16,10 @@ export class Codebase {
 		@inject('TranslationFiles') private translationFiles: ITranslationFiles,
 	) {}
 
+	async addTranslation(key: string, value: string, language: string): Promise<void> {
+		await this.translationFiles.addTranslation(key, value, language);
+	}
+
 	async getUntranslatedKeys(language: string): Promise<TranslationKey[]> {
 		const keys = await this.getAllKeys(language)
 		return keys.filter((key) => key.isUntranslated)

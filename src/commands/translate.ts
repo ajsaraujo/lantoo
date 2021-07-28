@@ -4,7 +4,6 @@ import { container } from 'tsyringe'
 import * as inquirer from 'inquirer';
 
 import { Codebase } from '../modules/i18n/codebase/codebase';
-import { ITranslationFiles } from '../modules/i18n/codebase/translation-files';
 import Command from './base'
 
 export default class Translate extends Command {
@@ -52,8 +51,8 @@ export default class Translate extends Command {
 	}
 
 	private async addTranslation(key: string, value: string) {
-		const translationFiles: ITranslationFiles = container.resolve('TranslationFiles');
-		await translationFiles.addTranslation(key, value, this.language);
+		const codebase: Codebase = container.resolve(Codebase);
+		await codebase.addTranslation(key, value, this.language);
 
 		this.log(`✔️ '${ key }':'${ value }' was added to the ${ this.language } translation file.`)
 	}
@@ -67,8 +66,8 @@ export default class Translate extends Command {
 			message: 'what do you want to do?',
 			type: 'list',
 			choices: [
-				{ name: 'add translations to existing untranslated keys', value: EXISTING_KEYS }, 
-				{ name: 'add brand new translation keys', value: BRAND_NEW_KEYS }
+				{ name: 'add translations to existing untranslated keys', value: EXISTING_KEYS },
+				{ name: 'add brand new translation keys', value: BRAND_NEW_KEYS },
 			],
 		}]);
 
@@ -80,7 +79,7 @@ export default class Translate extends Command {
 	}
 
 	private async addNewTranslationKeys() {
-		const translationFiles: ITranslationFiles = container.resolve('TranslationFiles');
+		const codebase: Codebase = container.resolve(Codebase);
 
 		this.log(`\nAdding new translations to the ${ this.language } translation file.`);
 		this.log('Enter Q at any moment to finish entering keys.\n');
@@ -113,7 +112,7 @@ export default class Translate extends Command {
 				break;
 			}
 
-			await translationFiles.addTranslation(key, value, this.language);
+			await codebase.addTranslation(key, value, this.language);
 
 			translationsAdded++;
 
@@ -162,9 +161,7 @@ export default class Translate extends Command {
 				break;
 			}
 
-			const translationFiles: ITranslationFiles = container.resolve('TranslationFiles');
-
-			await translationFiles.addTranslation(key, translation, this.language);
+			await codebase.addTranslation(key, translation, this.language);
 
 			newTranslations++;
 		}
