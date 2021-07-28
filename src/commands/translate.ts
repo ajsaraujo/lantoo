@@ -84,6 +84,11 @@ export default class Translate extends Command {
 		}
 	}
 
+	private async readInput(message: string): Promise<string> {
+		const { value } = await inquirer.prompt([{ message, name: 'value', type: 'input' }]);
+		return (value as string).trim();
+	}
+
 	private async addNewTranslationKeys() {
 		this.log(`\nAdding new translations to the ${ this.language } translation file.`);
 		this.log('Enter Q at any moment to finish entering keys.\n');
@@ -92,27 +97,15 @@ export default class Translate extends Command {
 
 		// eslint-disable-next-line no-constant-condition
 		while (true) {
-			const { key } = await inquirer.prompt([
-				{
-					name: 'key',
-					message: 'key',
-					type: 'input',
-				},
-			])
+			const key = await this.readInput('key');
 
-			if (key.trim().toUpperCase() === 'Q') {
+			if (key.toUpperCase() === 'Q') {
 				break;
 			}
 
-			const { value } = await inquirer.prompt([
-				{
-					name: 'value',
-					message: 'value',
-					type: 'input',
-				},
-			]);
+			const value = await this.readInput('value');
 
-			if (value.trim().toUpperCase() === 'Q') {
+			if (value.toUpperCase() === 'Q') {
 				break;
 			}
 
@@ -123,6 +116,10 @@ export default class Translate extends Command {
 			this.log('\nAdded successfully! Enter the next one or Q to quit.');
 		}
 
+		this.outputHowManyTranslationsWereAdded(translationsAdded);
+	}
+
+	private outputHowManyTranslationsWereAdded(translationsAdded: number) {
 		if (translationsAdded === 0) {
 			this.log('\nNo translations were added.');
 		} else if (translationsAdded === 1) {
@@ -144,16 +141,10 @@ export default class Translate extends Command {
 		this.log(`Found ${ untranslatedKeys.length } untranslated key(s).`);
 		this.log('Leave the translation empty to skip a key. Enter Q to quit.');
 
-		let newTranslations = 0;
+		let translationsAdded = 0;
 
 		for (const { key } of untranslatedKeys) {
-			const response = await inquirer.prompt([{
-				name: 'translation',
-				message: key,
-				type: 'input',
-			}])
-
-			const translation = (response.translation as string).trim();
+			const translation = await this.readInput(key);
 
 			const translationSkipped = translation === '';
 			if (translationSkipped) {
@@ -165,17 +156,11 @@ export default class Translate extends Command {
 				break;
 			}
 
-			await codebase.addTranslation(key, translation, this.language);
+			await this.addTranslation(key, translation);
 
-			newTranslations++;
+			translationsAdded++;
 		}
 
-		if (newTranslations === 0) {
-			this.log('No translations were added.');
-		} else if (newTranslations === 1) {
-			this.log('One new translation was added.');
-		} else {
-			this.log(`${ newTranslations } new translations were added.`);
-		}
+		this.outputHowManyTranslationsWereAdded(translationsAdded);
 	}
 }
