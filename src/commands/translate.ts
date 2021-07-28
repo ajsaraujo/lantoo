@@ -41,7 +41,7 @@ export default class Translate extends Command {
 		if (interactive) {
 			await this.runInteractiveMode();
 		} else {
-			await this.addTranslation(key as string, value as string);
+			await this.runKeyAndValueMode(key as string, value as string);
 		}
 	}
 
@@ -50,28 +50,34 @@ export default class Translate extends Command {
 		Translate.examples.map((example) => this.log(example));
 	}
 
-	private async addTranslation(key: string, value: string) {
-		const codebase: Codebase = container.resolve(Codebase);
-		await codebase.addTranslation(key, value, this.language);
+	private async runKeyAndValueMode(key: string, value: string) {
+		await this.addTranslation(key, value);
 
 		this.log(`✔️ '${ key }':'${ value }' was added to the ${ this.language } translation file.`)
 	}
 
+	private async addTranslation(key: string, value: string) {
+		const codebase: Codebase = container.resolve(Codebase);
+		await codebase.addTranslation(key, value, this.language);
+	}
+
 	private async runInteractiveMode() {
-		const EXISTING_KEYS = 0;
-		const BRAND_NEW_KEYS = 1;
+		enum InteractiveModeOptions {
+			ExistingKeys,
+			BrandNewKeys
+		}
 
 		const response = await inquirer.prompt([{
 			name: 'mode',
 			message: 'what do you want to do?',
 			type: 'list',
 			choices: [
-				{ name: 'add translations to existing untranslated keys', value: EXISTING_KEYS },
-				{ name: 'add brand new translation keys', value: BRAND_NEW_KEYS },
+				{ name: 'add translations to existing untranslated keys', value: InteractiveModeOptions.ExistingKeys },
+				{ name: 'add brand new translation keys', value: InteractiveModeOptions.BrandNewKeys },
 			],
 		}]);
 
-		if (response.mode === EXISTING_KEYS) {
+		if (response.mode === InteractiveModeOptions.ExistingKeys) {
 			await this.addTranslationsToExistingKeys();
 		} else {
 			await this.addNewTranslationKeys();
@@ -79,8 +85,6 @@ export default class Translate extends Command {
 	}
 
 	private async addNewTranslationKeys() {
-		const codebase: Codebase = container.resolve(Codebase);
-
 		this.log(`\nAdding new translations to the ${ this.language } translation file.`);
 		this.log('Enter Q at any moment to finish entering keys.\n');
 
@@ -112,7 +116,7 @@ export default class Translate extends Command {
 				break;
 			}
 
-			await codebase.addTranslation(key, value, this.language);
+			await this.addTranslation(key, value);
 
 			translationsAdded++;
 
