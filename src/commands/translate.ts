@@ -54,7 +54,7 @@ export default class Translate extends Command {
 	private async runKeyAndValueMode(key: string, value: string) {
 		await this.addTranslation(key, value);
 
-		this.log(`✔️ '${ key }':'${ value }' was added to the ${ this.language } translation file.`)
+		this.log(`✔️ '${ key }' -> '${ value }' was added to the ${ this.language } translation file.`)
 	}
 
 	private async addTranslation(key: string, value: string) {
@@ -116,9 +116,9 @@ export default class Translate extends Command {
 		if (translationsAdded === 0) {
 			this.log('\nNo translations were added.');
 		} else if (translationsAdded === 1) {
-			this.log('\nAdded one new translation.');
+			this.log('\n✔️ Added one new translation.');
 		} else {
-			this.log(`\nAdded ${ translationsAdded } new translations.`);
+			this.log(`\n✔️ Added ${ translationsAdded } new translations.`);
 		}
 	}
 
