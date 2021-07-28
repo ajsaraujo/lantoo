@@ -2,7 +2,6 @@
 import { flags } from '@oclif/parser'
 import { container } from 'tsyringe'
 import * as inquirer from 'inquirer';
-import instance from 'tsyringe/dist/typings/dependency-container';
 
 import { Codebase } from '../modules/i18n/codebase/codebase';
 import Command from './base'
@@ -127,7 +126,7 @@ export default class Translate extends Command {
 		const untranslatedKeys = await codebase.getUntranslatedKeys(this.language);
 
 		if (untranslatedKeys.length === 0) {
-			this.log(`Did not found any untranslated keys in ${ this.language }`);
+			this.log(`Did not find any untranslated keys in ${ this.language }`);
 			return;
 		}
 
