@@ -2,6 +2,7 @@
 import { flags } from '@oclif/parser'
 import { container } from 'tsyringe'
 import * as inquirer from 'inquirer';
+import instance from 'tsyringe/dist/typings/dependency-container';
 
 import { Codebase } from '../modules/i18n/codebase/codebase';
 import Command from './base'
@@ -84,11 +85,6 @@ export default class Translate extends Command {
 		}
 	}
 
-	private async readInput(message: string): Promise<string> {
-		const { value } = await inquirer.prompt([{ message, name: 'value', type: 'input' }]);
-		return (value as string).trim();
-	}
-
 	private async addNewTranslationKeys() {
 		this.log(`\nAdding new translations to the ${ this.language } translation file.`);
 		this.log('Enter Q at any moment to finish entering keys.\n');
@@ -97,23 +93,20 @@ export default class Translate extends Command {
 
 		// eslint-disable-next-line no-constant-condition
 		while (true) {
-			const key = await this.readInput('key');
+			try {
+				const key = await this.readInput('key');
+				const value = await this.readInput('value');
 
-			if (key.toUpperCase() === 'Q') {
-				break;
+				await this.addTranslation(key, value);
+
+				translationsAdded++;
+
+				this.log('\nAdded successfully! Enter the next one or Q to quit.');
+			} catch (err) {
+				if (err instanceof QuitButtonPressedError) {
+					break;
+				}
 			}
-
-			const value = await this.readInput('value');
-
-			if (value.toUpperCase() === 'Q') {
-				break;
-			}
-
-			await this.addTranslation(key, value);
-
-			translationsAdded++;
-
-			this.log('\nAdded successfully! Enter the next one or Q to quit.');
 		}
 
 		this.outputHowManyTranslationsWereAdded(translationsAdded);
@@ -144,23 +137,41 @@ export default class Translate extends Command {
 		let translationsAdded = 0;
 
 		for (const { key } of untranslatedKeys) {
-			const translation = await this.readInput(key);
+			try {
+				const translation = await this.readInput(key);
 
-			const translationSkipped = translation === '';
-			if (translationSkipped) {
-				continue;
+				const userSkippedThisTranslation = !translation;
+				if (userSkippedThisTranslation) {
+					continue;
+				}
+
+				await this.addTranslation(key, translation);
+
+				translationsAdded++;
+			} catch (err) {
+				if (err instanceof QuitButtonPressedError) {
+					break;
+				}
 			}
-
-			const quitButtonPressed = translation.toUpperCase() === 'Q';
-			if (quitButtonPressed) {
-				break;
-			}
-
-			await this.addTranslation(key, translation);
-
-			translationsAdded++;
 		}
 
 		this.outputHowManyTranslationsWereAdded(translationsAdded);
+	}
+
+	private async readInput(message: string): Promise<string> {
+		const { value } = await inquirer.prompt([{ message, name: 'value', type: 'input' }]);
+		const parsedValue = (value as string).trim();
+
+		if (parsedValue.toUpperCase() === 'Q') {
+			throw new QuitButtonPressedError();
+		}
+
+		return parsedValue;
+	}
+}
+
+class QuitButtonPressedError extends Error {
+	constructor() {
+		super('quit button pressed');
 	}
 }
