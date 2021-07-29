@@ -1,6 +1,6 @@
 import { container } from 'tsyringe'
 
-import { FileSystem, IFileSystem } from '../modules/shared'
+import { FileSystem, IFileSystem } from '../modules/io'
 import { IPreferencesStorage, PreferencesStorage } from '../modules/preferences'
 import {
 	ITranslationFiles,

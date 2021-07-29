@@ -4,7 +4,7 @@ import sinon from 'sinon'
 
 import { CodeParser, MockCodeParser } from '@modules/i18n/codebase/code-parser'
 import { KeyOccurrence } from '@modules/i18n/models/translation-key'
-import { IFileSystem, MockFileSystem } from '@modules/shared'
+import { IFileSystem, MockFileSystem } from '@modules/io'
 import {
 	IPreferencesStorage,
 	MockPreferenceStorage,

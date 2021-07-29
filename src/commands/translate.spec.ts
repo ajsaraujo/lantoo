@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import sinon, { SinonSpy } from 'sinon';
 
 import { ITranslationFiles, MockTranslationFiles } from '@modules/i18n/codebase/translation-files';
-import { IFileSystem, MockFileSystem } from '@modules/shared';
+import { IFileSystem, MockFileSystem } from '@modules/io';
 import { IPreferencesStorage, MockPreferenceStorage } from '@modules/preferences';
 
 
@@ -22,7 +22,7 @@ describe('translate command', () => {
 		.stdout()
 		.command(['translate', '--key', 'away_male', '--value', 'ausente', '--lang', 'pt-BR'])
 		.it('should add the translation if key and value are passed', (ctx) => {
-			expect(ctx.stdout).to.contain("✔️ 'away_male':'ausente' was added to the pt-BR translation file.");
+			expect(ctx.stdout).to.contain("✔️ 'away_male' -> 'ausente' was added to the pt-BR translation file.");
 			expect(addTranslationSpy.calledWith('away_male', 'ausente', 'pt-BR'))
 		})
 })

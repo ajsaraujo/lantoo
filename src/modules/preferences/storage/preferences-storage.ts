@@ -3,7 +3,7 @@ import assert from 'assert'
 
 import { inject, injectable } from 'tsyringe'
 
-import { IFileSystem } from '../../shared/file-system'
+import { IFileSystem } from '../../io/file-system'
 
 export interface IPreferencesStorage {
 	get(key: string): Promise<string>

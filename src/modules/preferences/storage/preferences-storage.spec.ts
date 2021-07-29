@@ -2,7 +2,7 @@ import sinon, { SinonSpy } from 'sinon'
 import { expect, fancy } from 'fancy-test'
 
 import { PreferencesStorage } from './preferences-storage'
-import { IFileSystem } from '../../shared/file-system'
+import { IFileSystem } from '../../io/file-system'
 
 let storage: PreferencesStorage
 let fileSystem: MockFileSystem

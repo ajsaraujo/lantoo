@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe'
 
-import { IFileSystem } from '../../shared'
+import { IFileSystem } from '../../io'
 import { Translation } from '../models/translation-key'
 
 export interface ITranslationFiles {
