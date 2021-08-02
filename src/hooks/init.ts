@@ -1,6 +1,5 @@
 import { container } from 'tsyringe'
 
-import { FileSystem, IFileSystem } from '../modules/io'
 import { IPreferencesStorage, PreferencesStorage } from '../modules/preferences'
 import {
 	ITranslationFiles,
@@ -22,8 +21,6 @@ function registerSingletons(): void {
 		'TranslationFiles',
 		MockTranslationFiles,
 	)
-
-	container.registerSingleton<IFileSystem>('FileSystem', FileSystem)
 }
 
 export default registerSingletons

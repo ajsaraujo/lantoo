@@ -3,9 +3,8 @@ import { container } from 'tsyringe';
 import sinon, { SinonSpy } from 'sinon';
 
 import { ITranslationFiles, MockTranslationFiles } from '@modules/i18n/codebase/translation-files';
-import { IFileSystem, MockFileSystem } from '@modules/io';
 import { IPreferencesStorage, MockPreferenceStorage } from '@modules/preferences';
-
+import { FileSystem } from '@modules/io';
 
 let addTranslationSpy: SinonSpy
 
@@ -30,9 +29,12 @@ describe('translate command', () => {
 function mockTranslationFiles() {
 	container.reset();
 
-	container.registerSingleton<IFileSystem>('FileSystem', MockFileSystem);
 	container.registerSingleton<ITranslationFiles>('TranslationFiles', MockTranslationFiles);
 	container.registerSingleton<IPreferencesStorage>('PreferencesStorage', MockPreferenceStorage);
+
+	const fileSystem = container.resolve(FileSystem);
+	sinon.stub(fileSystem, 'readJSON');
+	sinon.stub(fileSystem, 'writeJSON');
 
 	const translationFiles: ITranslationFiles = container.resolve('TranslationFiles');
 	addTranslationSpy = sinon.spy(translationFiles, 'addTranslation');

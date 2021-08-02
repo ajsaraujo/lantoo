@@ -1,6 +1,6 @@
-import { inject, injectable } from 'tsyringe'
+import { injectable } from 'tsyringe'
 
-import { IFileSystem } from '../../io'
+import { FileSystem } from '../../io';
 import { Translation } from '../models/translation-key'
 
 export interface ITranslationFiles {
@@ -16,7 +16,7 @@ export interface ITranslationFiles {
 
 @injectable()
 export class TranslationFiles implements ITranslationFiles {
-	constructor(@inject('FileSystem') private fileSystem: IFileSystem) {}
+	constructor(private fileSystem: FileSystem) {}
 
 	async addTranslation(key: string, value: string, language: string): Promise<void> {
 		const translations = await this.getTranslationFile(language);

@@ -1,10 +1,10 @@
 import { expect, test } from '@oclif/test'
 import { container } from 'tsyringe'
-import sinon from 'sinon'
+import sinon, { SinonStubbedInstance } from 'sinon'
 
 import { CodeParser, MockCodeParser } from '@modules/i18n/codebase/code-parser'
 import { KeyOccurrence } from '@modules/i18n/models/translation-key'
-import { IFileSystem, MockFileSystem } from '@modules/io'
+import { FileSystem } from '@modules/io'
 import {
 	IPreferencesStorage,
 	MockPreferenceStorage,
@@ -14,14 +14,13 @@ import {
 	TranslationFiles,
 } from '@modules/i18n/codebase/translation-files'
 
-let fileSystem: MockFileSystem
+let fileSystem: SinonStubbedInstance<FileSystem>
 let codeParser: MockCodeParser
 
 const prepare = test.do(() => {
 	container.reset()
 
 	container.registerSingleton<CodeParser>(CodeParser, MockCodeParser)
-	container.registerSingleton<IFileSystem>('FileSystem', MockFileSystem)
 	container.registerSingleton<IPreferencesStorage>(
 		'PreferencesStorage',
 		MockPreferenceStorage,
@@ -31,7 +30,10 @@ const prepare = test.do(() => {
 		TranslationFiles,
 	)
 
-	fileSystem = container.resolve('FileSystem')
+	fileSystem = sinon.createStubInstance(FileSystem);
+
+	container.registerInstance(FileSystem, fileSystem);
+
 	codeParser = container.resolve(CodeParser)
 })
 
@@ -41,7 +43,8 @@ function setup(
 ) {
 	return prepare
 		.do(() => {
-			sinon.stub(fileSystem, 'readJSON').resolves(translations)
+			fileSystem.readJSON.resolves(translations);
+
 			sinon.stub(codeParser, 'getKeyOccurrences').resolves(occurrences)
 		})
 		.stdout()

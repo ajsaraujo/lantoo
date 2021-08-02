@@ -1,9 +1,9 @@
 import * as path from 'path'
 import assert from 'assert'
 
-import { inject, injectable } from 'tsyringe'
+import { injectable } from 'tsyringe'
 
-import { IFileSystem } from '../../io/file-system'
+import { FileSystem } from '../../io'
 
 export interface IPreferencesStorage {
 	get(key: string): Promise<string>
@@ -19,7 +19,7 @@ export class PreferencesStorage implements IPreferencesStorage {
 
 	private configObjectWasLoaded = false
 
-	constructor(@inject('FileSystem') private fs: IFileSystem) {}
+	constructor(private fs: FileSystem) {}
 
 	set configDirectory(directory: string) {
 		this.configFilePath = path.join(directory, 'config.json')
