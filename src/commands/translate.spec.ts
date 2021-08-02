@@ -2,7 +2,7 @@ import { expect, test } from '@oclif/test';
 import { container } from 'tsyringe';
 import sinon, { SinonSpy } from 'sinon';
 
-import { ITranslationFiles, MockTranslationFiles } from '@modules/i18n/codebase/translation-files';
+import { TranslationFiles } from '@modules/i18n/codebase/translation-files';
 import { IPreferencesStorage, MockPreferenceStorage } from '@modules/preferences';
 import { FileSystem } from '@modules/io';
 
@@ -29,13 +29,12 @@ describe('translate command', () => {
 function mockTranslationFiles() {
 	container.reset();
 
-	container.registerSingleton<ITranslationFiles>('TranslationFiles', MockTranslationFiles);
+	const fileSystemStub = sinon.createStubInstance(FileSystem);
+	fileSystemStub.readJSON.resolves({});
+
+	container.registerInstance(FileSystem, fileSystemStub);
 	container.registerSingleton<IPreferencesStorage>('PreferencesStorage', MockPreferenceStorage);
 
-	const fileSystem = container.resolve(FileSystem);
-	sinon.stub(fileSystem, 'readJSON');
-	sinon.stub(fileSystem, 'writeJSON');
-
-	const translationFiles: ITranslationFiles = container.resolve('TranslationFiles');
+	const translationFiles = container.resolve(TranslationFiles);
 	addTranslationSpy = sinon.spy(translationFiles, 'addTranslation');
 }

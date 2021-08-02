@@ -9,10 +9,6 @@ import {
 	IPreferencesStorage,
 	MockPreferenceStorage,
 } from '@modules/preferences'
-import {
-	ITranslationFiles,
-	TranslationFiles,
-} from '@modules/i18n/codebase/translation-files'
 
 let fileSystem: SinonStubbedInstance<FileSystem>
 let codeParser: MockCodeParser
@@ -24,10 +20,6 @@ const prepare = test.do(() => {
 	container.registerSingleton<IPreferencesStorage>(
 		'PreferencesStorage',
 		MockPreferenceStorage,
-	)
-	container.registerSingleton<ITranslationFiles>(
-		'TranslationFiles',
-		TranslationFiles,
 	)
 
 	fileSystem = sinon.createStubInstance(FileSystem);

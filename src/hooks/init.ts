@@ -1,9 +1,9 @@
 import { container } from 'tsyringe'
 
+
 import { IPreferencesStorage, PreferencesStorage } from '../modules/preferences'
 import {
-	ITranslationFiles,
-	MockTranslationFiles,
+	MockTranslationFiles, TranslationFiles,
 } from '../modules/i18n/codebase/translation-files'
 
 function registerSingletons(): void {
@@ -12,14 +12,11 @@ function registerSingletons(): void {
 		return
 	}
 
+	container.register(TranslationFiles, MockTranslationFiles);
+
 	container.registerSingleton<IPreferencesStorage>(
 		'PreferencesStorage',
 		PreferencesStorage,
-	)
-
-	container.registerSingleton<ITranslationFiles>(
-		'TranslationFiles',
-		MockTranslationFiles,
 	)
 }
 

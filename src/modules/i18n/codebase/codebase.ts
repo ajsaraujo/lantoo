@@ -1,9 +1,9 @@
-import { inject, injectable } from 'tsyringe'
+import { injectable } from 'tsyringe'
 
 import { TranslationKey } from '../models/translation-key'
 import { CodeParser } from './code-parser'
 import { KeyAssembler } from './key-assembler'
-import { ITranslationFiles } from './translation-files'
+import { TranslationFiles } from './translation-files';
 
 /**
  * Parses translation files and the codebase to
@@ -13,7 +13,7 @@ import { ITranslationFiles } from './translation-files'
 export class Codebase {
 	constructor(
 		private codeParser: CodeParser,
-		@inject('TranslationFiles') private translationFiles: ITranslationFiles,
+		private translationFiles: TranslationFiles,
 	) {}
 
 	async addTranslation(key: string, value: string, language: string): Promise<void> {

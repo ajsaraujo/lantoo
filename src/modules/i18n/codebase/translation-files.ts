@@ -1,21 +1,10 @@
-import { injectable } from 'tsyringe'
+import { singleton } from 'tsyringe'
 
 import { FileSystem } from '../../io';
 import { Translation } from '../models/translation-key'
 
-export interface ITranslationFiles {
-	getTranslation(
-		key: string,
-		language: string
-	): Promise<Translation | undefined>
-
-	getTranslations(language: string): Promise<Record<string, Translation>>
-
-	addTranslation(key: string, value: string, language: string): Promise<void>;
-}
-
-@injectable()
-export class TranslationFiles implements ITranslationFiles {
+@singleton()
+export class TranslationFiles {
 	constructor(private fileSystem: FileSystem) {}
 
 	async addTranslation(key: string, value: string, language: string): Promise<void> {
@@ -65,6 +54,7 @@ export class TranslationFiles implements ITranslationFiles {
 	}
 }
 
+@singleton()
 export class MockTranslationFiles extends TranslationFiles {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
