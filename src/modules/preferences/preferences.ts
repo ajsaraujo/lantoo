@@ -1,8 +1,8 @@
-import { inject, injectable } from 'tsyringe'
+import { injectable } from 'tsyringe'
 
 import { LanguageUtils } from '../i18n'
 import { InvalidValueForPreferenceError } from './errors'
-import { IPreferencesStorage } from './storage/preferences-storage'
+import { PreferencesStorage } from './storage/preferences-storage'
 
 export type Preference = 'lang'
 export const possiblePreferences: Preference[] = ['lang']
@@ -10,7 +10,7 @@ export const possiblePreferences: Preference[] = ['lang']
 @injectable()
 export class Preferences {
 	constructor(
-		@inject('PreferencesStorage') private storage: IPreferencesStorage,
+		private storage: PreferencesStorage,
 		private languageUtils: LanguageUtils,
 	) {}
 

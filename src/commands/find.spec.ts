@@ -6,8 +6,7 @@ import { CodeParser, MockCodeParser } from '@modules/i18n/codebase/code-parser'
 import { KeyOccurrence } from '@modules/i18n/models/translation-key'
 import { FileSystem } from '@modules/io'
 import {
-	IPreferencesStorage,
-	MockPreferenceStorage,
+	MockPreferenceStorage, PreferencesStorage,
 } from '@modules/preferences'
 
 let fileSystem: SinonStubbedInstance<FileSystem>
@@ -17,10 +16,8 @@ const prepare = test.do(() => {
 	container.reset()
 
 	container.registerSingleton<CodeParser>(CodeParser, MockCodeParser)
-	container.registerSingleton<IPreferencesStorage>(
-		'PreferencesStorage',
-		MockPreferenceStorage,
-	)
+
+	container.register(PreferencesStorage, MockPreferenceStorage);
 
 	fileSystem = sinon.createStubInstance(FileSystem);
 

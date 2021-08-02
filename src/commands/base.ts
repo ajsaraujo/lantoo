@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import Command from '@oclif/command'
 import { container } from 'tsyringe'
 
-import { IPreferencesStorage, Preferences } from '../modules/preferences'
+import { Preferences, PreferencesStorage } from '../modules/preferences'
 import { LanguageUtils } from '../modules/i18n'
 
 export default abstract class extends Command {
@@ -60,7 +60,7 @@ export default abstract class extends Command {
 	}
 
 	private setConfigFilePath() {
-		const storage = container.resolve<IPreferencesStorage>('PreferencesStorage')
+		const storage = container.resolve(PreferencesStorage);
 		storage.configDirectory = this.config.configDir
 	}
 }

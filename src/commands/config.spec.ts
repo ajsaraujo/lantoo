@@ -1,17 +1,13 @@
 import { expect, test } from '@oclif/test'
 import { container } from 'tsyringe'
 
-import {
-	IPreferencesStorage,
-	MockPreferenceStorage,
-} from '../modules/preferences/storage/preferences-storage'
+import { MockPreferenceStorage, PreferencesStorage } from '@modules/preferences'
+import { FileSystem } from '@modules/io';
 
-container.registerSingleton<IPreferencesStorage>(
-	'PreferencesStorage',
-	MockPreferenceStorage,
-)
+const storage = new MockPreferenceStorage(new FileSystem());
 
-const storage: MockPreferenceStorage = container.resolve('PreferencesStorage')
+container.registerInstance(PreferencesStorage, storage)
+
 const setup = test.do(() => storage.clear())
 
 describe('config command', () => {

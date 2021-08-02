@@ -1,17 +1,18 @@
 import * as path from 'path'
 import assert from 'assert'
 
-import { injectable } from 'tsyringe'
+import { singleton } from 'tsyringe'
 
 import { FileSystem } from '../../io'
 
-export interface IPreferencesStorage {
+interface IPreferencesStorage {
+	configDirectory: string;
+
 	get(key: string): Promise<string>
 	set(key: string, value: string): Promise<void>
-	configDirectory: string
 }
 
-@injectable()
+@singleton()
 export class PreferencesStorage implements IPreferencesStorage {
 	private configFilePath = ''
 
@@ -85,10 +86,10 @@ export class PreferencesStorage implements IPreferencesStorage {
 	}
 }
 
-export class MockPreferenceStorage implements IPreferencesStorage {
-	configDirectory = ''
-
+export class MockPreferenceStorage extends PreferencesStorage implements IPreferencesStorage {
 	private preferencesObject: { [key: string]: string } = {}
+
+	set configDirectory(value: string) {}
 
 	async get(key: string): Promise<string> {
 		return this.preferencesObject[key]

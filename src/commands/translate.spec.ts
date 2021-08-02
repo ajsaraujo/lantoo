@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import sinon, { SinonSpy } from 'sinon';
 
 import { TranslationFiles } from '@modules/i18n/codebase/translation-files';
-import { IPreferencesStorage, MockPreferenceStorage } from '@modules/preferences';
+import { MockPreferenceStorage, PreferencesStorage } from '@modules/preferences';
 import { FileSystem } from '@modules/io';
 
 let addTranslationSpy: SinonSpy
@@ -33,7 +33,7 @@ function mockTranslationFiles() {
 	fileSystemStub.readJSON.resolves({});
 
 	container.registerInstance(FileSystem, fileSystemStub);
-	container.registerSingleton<IPreferencesStorage>('PreferencesStorage', MockPreferenceStorage);
+	container.register(PreferencesStorage, MockPreferenceStorage);
 
 	const translationFiles = container.resolve(TranslationFiles);
 	addTranslationSpy = sinon.spy(translationFiles, 'addTranslation');
