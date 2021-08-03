@@ -1,3 +1,4 @@
+import { FileSystem } from '@modules/io';
 import { injectable } from 'tsyringe'
 
 import { TranslationKey } from '../models/translation-key'
@@ -14,6 +15,7 @@ export class Codebase {
 	constructor(
 		private codeParser: CodeParser,
 		private translationFiles: TranslationFiles,
+		private fileSystem: FileSystem,
 	) {}
 
 	async addTranslation(key: string, value: string, language: string): Promise<void> {
@@ -47,6 +49,21 @@ export class Codebase {
 		}
 
 		return result.value
+	}
+
+	async detectProject(): Promise<string> {
+		const { name } = await this.fileSystem.readJSON('package.json') as Record<string, string>;
+
+		switch (name) {
+			case 'Rocket.Chat':
+				return 'web';
+			case 'rocket-chat-reactnative':
+				return 'mobile';
+			case 'rocketchat':
+				return 'desktop';
+			default:
+				return '';
+		}
 	}
 
 	private async getAllKeys(language: string): Promise<TranslationKey[]> {
