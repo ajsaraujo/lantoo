@@ -1,6 +1,6 @@
-import { FileSystem } from '@modules/io';
 import { injectable } from 'tsyringe'
 
+import { FileSystem } from '../../io';
 import { TranslationKey } from '../models/translation-key'
 import { CodeParser } from './code-parser'
 import { KeyAssembler } from './key-assembler'
