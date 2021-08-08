@@ -19,7 +19,7 @@ $ npm install -g lantoo
 $ lantoo COMMAND
 running command...
 $ lantoo (-v|--version|version)
-lantoo/0.0.1 linux-x64 node-v10.19.0
+lantoo/0.0.1 linux-x64 node-v14.17.4
 $ lantoo --help [COMMAND]
 USAGE
   $ lantoo COMMAND
