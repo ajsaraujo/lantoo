@@ -1,7 +1,7 @@
 {
   "name": "lantoo",
   "description": "Rocket.Chat Language Tool",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Allan Juan @ajsaraujo",
   "bin": {
     "lantoo": "./bin/run"
