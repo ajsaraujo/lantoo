@@ -1,6 +1,7 @@
 import { container } from 'tsyringe'
 
-import { Codebase } from '../modules/i18n/codebase/codebase';
+import { AppFactory } from '@modules/i18n/apps';
+
 import {
 	MockTranslationFiles, TranslationFiles,
 } from '../modules/i18n/codebase/translation-files'
@@ -14,9 +15,10 @@ async function registerSingletons(): Promise<void> {
 	container.register(TranslationFiles, MockTranslationFiles);
 
 	try {
-		const codebase = container.resolve(Codebase);
-		const app = await codebase.detectProject();
-		console.log(`project: ${ app }`);
+		const appFactory = container.resolve(AppFactory);
+		const app = await appFactory.getCurrentApp();
+
+		container.registerInstance('App', app);
 	} catch (err) {
 		console.log('Could not find a package.json file. For lantoo to work properly, please run it at the root folder of a Rocket.Chat project.');
 	}

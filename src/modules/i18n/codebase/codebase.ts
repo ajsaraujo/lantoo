@@ -51,21 +51,6 @@ export class Codebase {
 		return result.value
 	}
 
-	async detectProject(): Promise<string> {
-		const { name } = await this.fileSystem.readJSON('package.json') as Record<string, string>;
-
-		switch (name) {
-			case 'Rocket.Chat':
-				return 'web';
-			case 'rocket-chat-reactnative':
-				return 'mobile';
-			case 'rocketchat':
-				return 'desktop';
-			default:
-				return '';
-		}
-	}
-
 	private async getAllKeys(language: string): Promise<TranslationKey[]> {
 		const occurrences = await this.codeParser.getKeyOccurrences()
 		const translations = await this.translationFiles.getTranslations(language)
