@@ -1,6 +1,5 @@
 import { injectable } from 'tsyringe'
 
-import { FileSystem } from '../../io';
 import { TranslationKey } from '../models/translation-key'
 import { CodeParser } from './code-parser'
 import { KeyAssembler } from './key-assembler'
@@ -15,7 +14,6 @@ export class Codebase {
 	constructor(
 		private codeParser: CodeParser,
 		private translationFiles: TranslationFiles,
-		private fileSystem: FileSystem,
 	) {}
 
 	async addTranslation(key: string, value: string, language: string): Promise<void> {
