@@ -3,14 +3,14 @@ import 'reflect-metadata'
 import Command from '@oclif/command'
 import { container } from 'tsyringe'
 
+import { FileSystem } from '../modules/io'
 import { Preferences, PreferencesStorage } from '../modules/preferences'
 import { LanguageUtils } from '../modules/i18n'
 
 export default abstract class extends Command {
 	async init(): Promise<void> {
 		await super.init()
-
-		this.setConfigFilePath()
+		await this.setConfigFilePath()
 	}
 
 	/**
@@ -49,7 +49,7 @@ export default abstract class extends Command {
 
 	private async setPreferredLanguageToEnUs() {
 		const preferences = container.resolve(Preferences)
-		await preferences.set('lang', 'en-US')
+		await preferences.set('lang', 'en')
 	}
 
 	private async getLanguageFromPreferences() {
@@ -59,8 +59,13 @@ export default abstract class extends Command {
 		return language
 	}
 
-	private setConfigFilePath() {
+	private async setConfigFilePath() {
+		const fileSystem = container.resolve(FileSystem);
 		const storage = container.resolve(PreferencesStorage);
-		storage.configDirectory = this.config.configDir
+		const configFileDirectory = this.config.configDir;
+
+		await fileSystem.ensureDirectoryExists(configFileDirectory);
+
+		storage.configDirectory = configFileDirectory;
 	}
 }

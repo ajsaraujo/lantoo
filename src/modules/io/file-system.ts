@@ -12,4 +12,8 @@ export class FileSystem {
 	writeJSON(path: string, object: JSON): Promise<any> {
 		return fs.writeJSON(path, object)
 	}
+
+	ensureDirectoryExists(path: string): Promise<void> {
+		return fs.ensureDir(path);
+	}
 }

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { singleton } from 'tsyringe'
+import { container, singleton } from 'tsyringe'
 
 import { FileSystem } from '../../io';
+import { App } from '../apps';
 import { Translation } from '../models/translation-key'
 
 @singleton()
@@ -60,7 +61,7 @@ export class TranslationFiles {
 	}
 
 	private async getTranslationFile(language: string): Promise<Record<string, unknown>> {
-		const path = await this.translationFilePath(language);
+		const path = this.translationFilePath(language);
 
 		const json = await this.fileSystem.readJSON(
 			path,
@@ -70,7 +71,8 @@ export class TranslationFiles {
 	}
 
 	private translationFilePath(language: string) {
-		return language;
+		const app: App = container.resolve('App');
+		return app.getTranslationFilePath(language);
 	}
 }
 
