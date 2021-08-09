@@ -23,4 +23,22 @@ describe('TranslationFiles', () => {
 			expect(translationsWritten.to_infinity_and_beyond).to.equal('Ao infinito, e além!');
 		})
 	})
+
+	describe('getTranslation()', () => {
+		it('should return the translation read from the file system', async () => {
+			fs.readJSON.resolves({ apple: 'maçã' });
+			const translation = await translationFiles.getTranslation('apple', 'pt-BR');
+
+			expect(translation?.key).to.equal('apple');
+			expect(translation?.value).to.equal('maçã');
+		})
+
+		it('should correctly return nested translations', async () => {
+			fs.readJSON.resolves({ fruits: { apple: 'maçã' } })
+			const translation = await translationFiles.getTranslation('fruits.apple', 'pt-BR');
+
+			expect(translation?.key).to.equal('fruits.apple');
+			expect(translation?.value).to.equal('maçã');
+		})
+	})
 })

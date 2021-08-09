@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
 import { singleton } from 'tsyringe'
 
 import { FileSystem } from '../../io';
@@ -31,15 +32,34 @@ export class TranslationFiles {
 		const json = await this.getTranslationFile(language);
 
 		const map: Record<string, Translation> = {}
+		const translations = this.parseJSON(json);
 
-		for (const [key, value] of Object.entries(json)) {
-			map[key] = new Translation(key, value)
+		for (const translation of translations) {
+			map[translation.key] = translation;
 		}
 
 		return map
 	}
 
-	private async getTranslationFile(language: string): Promise<Record<string, string>> {
+	private parseJSON(json: Record<string, unknown>, prefix = ''): Translation[] {
+		const translations: Translation[] = [];
+
+		for (const [key, value] of Object.entries(json)) {
+			const prefixedKey = prefix.length === 0 ? key : `${ prefix }.${ key }`;
+
+			if (typeof value === 'string') {
+				translations.push(new Translation(prefixedKey, value));
+			}
+
+			if (typeof value === 'object') {
+				translations.push(...this.parseJSON(json[key] as Record<string, unknown>, prefixedKey));
+			}
+		}
+
+		return translations;
+	}
+
+	private async getTranslationFile(language: string): Promise<Record<string, unknown>> {
 		const path = await this.translationFilePath(language);
 
 		const json = await this.fileSystem.readJSON(
