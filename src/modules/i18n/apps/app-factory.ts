@@ -14,7 +14,7 @@ export class AppFactory {
 		switch (name) {
 			case 'Rocket.Chat':
 				return new WebApp();
-			case 'rocket-chat-reactnatie':
+			case 'rocket-chat-reactnative':
 				return new MobileApp();
 			case 'rocketchat':
 				return new DesktopApp();

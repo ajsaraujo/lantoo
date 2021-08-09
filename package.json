@@ -83,7 +83,7 @@
     "pretty-quick": "pretty-quick",
     "postpack": "rimraf oclif.manifest.json",
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "test": "ts-mocha --paths -p tsconfig.json src/**/*.spec.ts --bail",
+    "test": "ts-mocha \"src/**/*.spec.ts\" --paths -p tsconfig.json --bail",
     "coverage": "nyc --extension .ts mocha --forbid-only \"src/**/*.spec.ts\"",
     "version": "oclif-dev readme && git add README.md",
     "lint": "eslint src/**/*.ts --fix"
