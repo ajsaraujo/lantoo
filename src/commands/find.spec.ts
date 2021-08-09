@@ -8,6 +8,7 @@ import { FileSystem } from '@modules/io'
 import {
 	MockPreferenceStorage, PreferencesStorage,
 } from '@modules/preferences'
+import { WebApp } from '@modules/i18n/apps/apps'
 
 let fileSystem: SinonStubbedInstance<FileSystem>
 let codeParser: MockCodeParser
@@ -24,6 +25,8 @@ const prepare = test.do(() => {
 	container.registerInstance(FileSystem, fileSystem);
 
 	codeParser = container.resolve(CodeParser)
+
+	container.registerInstance('App', new WebApp())
 })
 
 function setup(

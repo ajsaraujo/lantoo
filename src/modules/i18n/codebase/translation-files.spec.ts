@@ -1,16 +1,20 @@
 import test from 'fancy-test';
 import sinon, { SinonStubbedInstance } from 'sinon';
 import { expect } from 'chai';
+import { container } from 'tsyringe';
 
 import { FileSystem } from '@modules/io';
 
 import { TranslationFiles } from './translation-files';
+import { WebApp } from '../apps/apps';
 
 describe('TranslationFiles', () => {
 	let fs: SinonStubbedInstance<FileSystem>;
 	let translationFiles: TranslationFiles;
 
 	const { it } = test.do(() => {
+		container.registerInstance('App', new WebApp());
+
 		fs = sinon.createStubInstance(FileSystem);
 		fs.readJSON.resolves({});
 		translationFiles = new TranslationFiles(fs);

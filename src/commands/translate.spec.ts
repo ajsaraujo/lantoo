@@ -5,6 +5,7 @@ import sinon, { SinonSpy } from 'sinon';
 import { TranslationFiles } from '@modules/i18n/codebase/translation-files';
 import { MockPreferenceStorage, PreferencesStorage } from '@modules/preferences';
 import { FileSystem } from '@modules/io';
+import { WebApp } from '@modules/i18n/apps/apps';
 
 let addTranslationSpy: SinonSpy
 
@@ -29,12 +30,13 @@ describe('translate command', () => {
 function mockTranslationFiles() {
 	container.reset();
 
-	const fileSystemStub = sinon.createStubInstance(FileSystem);
+	const fileSystemStub = sinon.createStubInstance(FileSystem)
 	fileSystemStub.readJSON.resolves({});
 
-	container.registerInstance(FileSystem, fileSystemStub);
-	container.register(PreferencesStorage, MockPreferenceStorage);
+	container.registerInstance(FileSystem, fileSystemStub)
+	container.registerInstance('App', new WebApp())
+	container.register(PreferencesStorage, MockPreferenceStorage)
 
-	const translationFiles = container.resolve(TranslationFiles);
-	addTranslationSpy = sinon.spy(translationFiles, 'addTranslation');
+	const translationFiles = container.resolve(TranslationFiles)
+	addTranslationSpy = sinon.spy(translationFiles, 'addTranslation')
 }

@@ -1,7 +1,6 @@
 import { injectable } from 'tsyringe';
 
-import { FileSystem } from '@modules/io';
-
+import { FileSystem } from '../../io';
 import { App, DesktopApp, MobileApp, WebApp } from './apps';
 
 @injectable()
