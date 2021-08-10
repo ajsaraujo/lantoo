@@ -15,11 +15,13 @@ export class KeyAssembler {
 	constructor(
 		private occurrences: KeyOccurrence[],
 		private translations: Record<string, Translation>,
+		private baseLanguageTranslations: Record<string, Translation>,
 	) {}
 
 	assemble(): TranslationKey[] {
 		this.combineOccurrencesWithTranslations()
 		this.createRemainingKeysFromUnusedTranslations()
+		this.compareWithBaseLanguage()
 
 		return Array.from(this.keys.values())
 	}
@@ -39,6 +41,16 @@ export class KeyAssembler {
 
 			if (!this.keys.has(key)) {
 				this.createTranslationKey(key, translation)
+			}
+		}
+	}
+
+	private compareWithBaseLanguage() {
+		for (const translation of Object.values(this.baseLanguageTranslations)) {
+			const { key } = translation;
+
+			if (!this.keys.has(key)) {
+				this.createTranslationKey(key, new Translation(key, ''));
 			}
 		}
 	}

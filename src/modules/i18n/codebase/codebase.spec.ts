@@ -1,7 +1,7 @@
 import test, { expect } from 'fancy-test';
 import sinon, { SinonStubbedInstance } from 'sinon';
 
-import { KeyOccurrence } from '../models/translation-key';
+import { KeyOccurrence, Translation } from '../models/translation-key';
 import { CodeParser } from './code-parser';
 import { Codebase } from './codebase';
 import { TranslationFiles } from './translation-files';
@@ -26,5 +26,19 @@ describe('Codebase', () => {
 
 			expect(keys[0].key).to.equal('Your_workspace_is_ready');
 		});
+
+		setup.it('should also compare to en translation file if the language is one other than english', async () => {
+			translationFiles.getTranslations.withArgs('en').resolves({
+				Your_workspace_is_ready: new Translation('Your_workspace_is_ready', 'Your workspace is ready'),
+			});
+
+			translationFiles.getTranslations.withArgs('pt-BR').resolves({});
+
+			codeParser.getKeyOccurrences.resolves([]);
+
+			const keys = await codebase.getUntranslatedKeys('pt-BR');
+
+			expect(keys[0].key).to.equal('Your_workspace_is_ready');
+		})
 	})
 })
