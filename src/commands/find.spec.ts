@@ -106,9 +106,6 @@ describe('find command', () => {
 				'should say the key is unused',
 				(ctx) => {
 					expect(ctx.stdout).to.contain('to_infinity_and_beyond is UNUSED')
-					expect(ctx.stdout).to.contain(
-						'It has a translation in pt-BR, but it is not used in the codebase.',
-					)
 				},
 			)
 		})

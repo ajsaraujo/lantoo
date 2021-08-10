@@ -89,7 +89,7 @@ export default class Find extends Command {
 	private sayKeyIsUnused(key: TranslationKey) {
 		this.log(
 			`\n⚠️  ${ key.key } is UNUSED\n\n`
-        + `It has a translation in ${ this.language }, but it is not used in the codebase.`,
+        + `It has a translation in ${ this.language } (${ key.translation }), but it is not used in the codebase.`,
 		)
 	}
 

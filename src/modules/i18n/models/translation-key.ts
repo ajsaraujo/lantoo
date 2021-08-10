@@ -28,7 +28,7 @@ export class TranslationKey {
 		this.referenceInCodebase = occurrence?.file
 		this.translation = translation?.value
 
-		this.state = this.computeState(translation, occurrence)
+		this.state = this.computeState(translation?.value, occurrence)
 	}
 
 	/**
@@ -57,7 +57,7 @@ export class TranslationKey {
 		return this.state === KeyState.Untranslated
 	}
 
-	private computeState(translation?: Translation, occurrence?: KeyOccurrence) {
+	private computeState(translation?: string, occurrence?: KeyOccurrence) {
 		if (translation && occurrence) {
 			return KeyState.Ok
 		}
