@@ -12,7 +12,7 @@ export class FileSystem {
 	writeJSON(path: string, object: JSON): Promise<any> {
 		const INDENTATION_SIZE = 2;
 		const NEW_LINE = '\n';
-		const formattedJSON = JSON.stringify(object, Object.keys(object).sort(), INDENTATION_SIZE) + NEW_LINE;
+		const formattedJSON = JSON.stringify(object, null, INDENTATION_SIZE) + NEW_LINE;
 
 		return fs.writeFile(path, formattedJSON);
 	}
