@@ -1,10 +1,11 @@
 {
-	"cSpell.words": [
-		"ajsaraujo",
-		"globby",
-		"lantoo",
-		"oclif",
-		"postpack",
-		"tsyringe"
-	]
+  "cSpell.words": [
+    "ajsaraujo",
+    "globby",
+    "lantoo",
+    "oclif",
+    "postpack",
+    "tsyringe"
+  ],
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
 }

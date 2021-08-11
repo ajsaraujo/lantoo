@@ -5,7 +5,7 @@ import { container } from 'tsyringe'
 
 import { FileSystem } from '../modules/io'
 import { Preferences, PreferencesStorage } from '../modules/preferences'
-import { LanguageUtils } from '../modules/i18n'
+import { LanguageUtils, PRIMARY_LANGUAGE } from '../modules/i18n'
 
 export default abstract class extends Command {
 	async init(): Promise<void> {
@@ -28,8 +28,8 @@ export default abstract class extends Command {
 		let preferredLanguage = await this.getLanguageFromPreferences()
 
 		if (!preferredLanguage) {
-			await this.setPreferredLanguageToEnUs()
-			preferredLanguage = 'en'
+			await this.setPreferredLanguageToPrimaryLanguage()
+			preferredLanguage = PRIMARY_LANGUAGE;
 		}
 
 		return preferredLanguage
@@ -47,9 +47,9 @@ export default abstract class extends Command {
 		return fixedLanguage
 	}
 
-	private async setPreferredLanguageToEnUs() {
+	private async setPreferredLanguageToPrimaryLanguage() {
 		const preferences = container.resolve(Preferences)
-		await preferences.set('lang', 'en')
+		await preferences.set('lang', PRIMARY_LANGUAGE)
 	}
 
 	private async getLanguageFromPreferences() {

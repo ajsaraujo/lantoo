@@ -1,4 +1,5 @@
 import { injectable } from 'tsyringe'
+import { PRIMARY_LANGUAGE } from '../languages';
 
 import { Translation, TranslationKey } from '../models/translation-key'
 import { CodeParser } from './code-parser'
@@ -52,12 +53,12 @@ export class Codebase {
 	private async getAllKeys(language: string): Promise<TranslationKey[]> {
 		const occurrences = await this.codeParser.getKeyOccurrences()
 		const translations = await this.translationFiles.getTranslations(language)
-		let baseLanguageTranslations: Record<string, Translation> = {};
+		let primaryLanguageTranslations: Record<string, Translation> = {};
 
-		if (language !== 'en') {
-			baseLanguageTranslations = await this.translationFiles.getTranslations('en');
+		if (language !== PRIMARY_LANGUAGE) {
+			primaryLanguageTranslations = await this.translationFiles.getTranslations(PRIMARY_LANGUAGE);
 		}
 
-		return new KeyAssembler(occurrences, translations, baseLanguageTranslations).assemble()
+		return new KeyAssembler(occurrences, translations, primaryLanguageTranslations).assemble()
 	}
 }

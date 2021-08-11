@@ -1,6 +1,7 @@
 import test, { expect } from 'fancy-test';
 import sinon, { SinonStubbedInstance } from 'sinon';
 
+import { PRIMARY_LANGUAGE } from '../languages';
 import { KeyOccurrence, Translation } from '../models/translation-key';
 import { CodeParser } from './code-parser';
 import { Codebase } from './codebase';
@@ -22,13 +23,13 @@ describe('Codebase', () => {
 			translationFiles.getTranslations.resolves({});
 			codeParser.getKeyOccurrences.resolves([new KeyOccurrence('Your_workspace_is_ready', 'workspace.js')])
 
-			const keys = await codebase.getUntranslatedKeys('en');
+			const keys = await codebase.getUntranslatedKeys(PRIMARY_LANGUAGE);
 
 			expect(keys[0].key).to.equal('Your_workspace_is_ready');
 		});
 
 		setup.it('should also compare to en translation file if the language is one other than english', async () => {
-			translationFiles.getTranslations.withArgs('en').resolves({
+			translationFiles.getTranslations.withArgs(PRIMARY_LANGUAGE).resolves({
 				Your_workspace_is_ready: new Translation('Your_workspace_is_ready', 'Your workspace is ready'),
 			});
 
