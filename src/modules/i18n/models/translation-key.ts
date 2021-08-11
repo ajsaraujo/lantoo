@@ -23,6 +23,8 @@ export class TranslationKey {
 
 	public translation?: string
 
+	public primaryLanguageTranslation?: string
+
 	private constructor(translation?: Translation, occurrence?: KeyOccurrence) {
 		this.key = (translation?.key || occurrence?.key) as string
 		this.referenceInCodebase = occurrence?.file
@@ -47,6 +49,14 @@ export class TranslationKey {
 		}
 
 		return Result.ok(new TranslationKey(translation, occurrence))
+	}
+
+	static createUntranslatedKey(key: string, primaryLanguageTranslation?: string): TranslationKey {
+		const translationKey = new TranslationKey(new Translation(key, ''));
+
+		translationKey.primaryLanguageTranslation = primaryLanguageTranslation;
+
+		return translationKey;
 	}
 
 	get isUnused(): boolean {

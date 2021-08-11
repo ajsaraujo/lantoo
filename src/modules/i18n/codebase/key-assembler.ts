@@ -47,10 +47,10 @@ export class KeyAssembler {
 
 	private compareWithBaseLanguage() {
 		for (const translation of Object.values(this.baseLanguageTranslations)) {
-			const { key } = translation;
+			const { key, value } = translation;
 
 			if (!this.keys.has(key)) {
-				this.createTranslationKey(key, new Translation(key, ''));
+				this.keys.set(key, TranslationKey.createUntranslatedKey(key, value))
 			}
 		}
 	}

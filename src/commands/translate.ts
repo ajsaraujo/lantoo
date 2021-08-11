@@ -135,9 +135,15 @@ export default class Translate extends Command {
 
 		let translationsAdded = 0;
 
-		for (const { key } of untranslatedKeys) {
+		for (const { key, primaryLanguageTranslation } of untranslatedKeys) {
 			try {
-				const translation = await this.readInput(key);
+				let prompt = key;
+
+				if (primaryLanguageTranslation) {
+					prompt += ` (${ primaryLanguageTranslation })`
+				}
+
+				const translation = await this.readInput(prompt);
 
 				const userSkippedThisTranslation = !translation;
 				if (userSkippedThisTranslation) {

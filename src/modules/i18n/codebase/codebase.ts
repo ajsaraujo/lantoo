@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe'
-import { PRIMARY_LANGUAGE } from '../languages';
 
+import { PRIMARY_LANGUAGE } from '../languages';
 import { Translation, TranslationKey } from '../models/translation-key'
 import { CodeParser } from './code-parser'
 import { KeyAssembler } from './key-assembler'
