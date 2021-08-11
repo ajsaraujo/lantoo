@@ -10,7 +10,10 @@ export class FileSystem {
 	}
 
 	writeJSON(path: string, object: JSON): Promise<any> {
-		return fs.writeJSON(path, object)
+		const INDENTATION_SIZE = 2;
+		const formattedJSON = JSON.stringify(object, null, INDENTATION_SIZE);
+
+		return fs.writeFile(path, formattedJSON);
 	}
 
 	ensureDirectoryExists(path: string): Promise<void> {
