@@ -42,6 +42,14 @@ export class TranslationFiles {
 		return map
 	}
 
+	async getAllTranslationsFromAllLanguages(): Promise<string[]> {
+		const app: App = container.resolve('App');
+		const translationFilesFolder = app.translationFileFolder;
+		const translationFiles = this.fileSystem.getFileNames(translationFilesFolder);
+
+		return translationFiles;
+	}
+
 	private parseJSON(json: Record<string, unknown>, prefix = ''): Translation[] {
 		const translations: Translation[] = [];
 
