@@ -42,12 +42,25 @@ export class TranslationFiles {
 		return map
 	}
 
-	async getAllTranslationsFromAllLanguages(): Promise<string[]> {
+	async getAllTranslationsFromAllLanguages(): Promise<Record<string, Translation[]>> {
+		const languages = await this.getAvailableLanguages()
+		const allTranslations: Record<string, Translation[]> = {}
+
+		await Promise.all(languages.map(async (language: string) => {
+			const translations = await this.getTranslations(language);
+			allTranslations[language] = Object.values(translations);
+		}))
+
+		return allTranslations
+	}
+
+	private async getAvailableLanguages() {
 		const app: App = container.resolve('App');
 		const translationFilesFolder = app.translationFileFolder;
-		const translationFiles = this.fileSystem.getFileNames(translationFilesFolder);
+		const translationFiles = await this.fileSystem.getFileNames(translationFilesFolder);
+		const languagesAvailable = translationFiles.map((fileName) => fileName.split('.')[0]);
 
-		return translationFiles;
+		return languagesAvailable;
 	}
 
 	private parseJSON(json: Record<string, unknown>, prefix = ''): Translation[] {

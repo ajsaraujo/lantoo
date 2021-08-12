@@ -8,7 +8,11 @@ export default class Report extends Command {
 
 	async run(): Promise<void> {
 		const translationFiles = container.resolve(TranslationFiles);
-		const fileNames = await translationFiles.getAllTranslationsFromAllLanguages();
-		this.log(JSON.stringify(fileNames));
+		const allTranslations = await translationFiles.getAllTranslationsFromAllLanguages();
+
+		for (const language of Object.keys(allTranslations)) {
+			const numOfTranslations = allTranslations[language].length;
+			this.log(`${ language }: ${ numOfTranslations }`)
+		}
 	}
 }
