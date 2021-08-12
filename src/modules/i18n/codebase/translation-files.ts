@@ -48,7 +48,10 @@ export class TranslationFiles {
 
 		await Promise.all(languages.map(async (language: string) => {
 			const translations = await this.getTranslations(language);
-			allTranslations[language] = Object.values(translations);
+
+			if (translations) {
+				allTranslations[language] = Object.values(translations);
+			}
 		}))
 
 		return allTranslations
