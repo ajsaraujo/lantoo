@@ -8,9 +8,12 @@ export default class Report extends Command {
 
 	async run(): Promise<void> {
 		const translationFiles = container.resolve(TranslationFiles);
+
+		console.log(`Calling async method.`);
+
 		const allTranslations = await translationFiles.getAllTranslationsFromAllLanguages();
 
-		console.log(`All translations: ${ allTranslations }`);
+		console.log(`Returned a value: ${ allTranslations }`);
 
 		for (const language of Object.keys(allTranslations)) {
 			const numOfTranslations = allTranslations[language].length;

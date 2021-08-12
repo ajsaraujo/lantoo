@@ -46,17 +46,19 @@ export class TranslationFiles {
 		const languages = await this.getAvailableLanguages()
 		const allTranslations: Record<string, Translation[]> = {}
 
-		await Promise.all(languages.map(async (language: string) => {
+		console.log('Iterating over promises.');
+
+		const promises = languages.map(async (language: string) => {
 			const translations = await this.getTranslations(language);
+			allTranslations[language] = Object.values(translations);
+		});
 
-			console.log(`${ language }: ${ translations }`)
+		await Promise.all(promises);
 
-			if (translations) {
-				allTranslations[language] = Object.values(translations);
-			}
-		}))
+		console.log('Done.');
+		console.log(`All translations: ${ JSON.stringify(allTranslations ) }`);
 
-		return allTranslations
+		return allTranslations;
 	}
 
 	private async getAvailableLanguages() {
