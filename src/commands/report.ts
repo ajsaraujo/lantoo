@@ -10,6 +10,8 @@ export default class Report extends Command {
 		const translationFiles = container.resolve(TranslationFiles);
 		const allTranslations = await translationFiles.getAllTranslationsFromAllLanguages();
 
+		console.log(`All translations: ${ allTranslations }`);
+
 		for (const language of Object.keys(allTranslations)) {
 			const numOfTranslations = allTranslations[language].length;
 			this.log(`${ language }: ${ numOfTranslations }`)
