@@ -11,10 +11,22 @@ export default class Report extends Command {
 		const codebase = container.resolve(Codebase)
 		const progressReports = await codebase.getTranslationProgress()
 
+		let index = 0
+
+		this.log('')
+
 		cli.table(progressReports, {
-			language: {},
-			translationKeys: { get: (row) => row.translatedStrings },
-			'%': { get: (row) => (row.percentageOfStringsTranslated * 100).toFixed(2) },
+			index: { header: '#', get: () => `${ index++ }`.padStart(2, '0') },
+			language: { header: 'Lang' },
+			translationKeys: { header: 'Keys translated', get: (row) => row.translatedStrings },
+			'%': { get: (row) => this.formatPercentage(row.percentageOfStringsTranslated) },
 		})
+	}
+
+	private formatPercentage(percentage: number) {
+		const twoDigits = (percentage * 100).toFixed(1)
+		const padded = twoDigits.padStart(3, ' ')
+
+		return padded
 	}
 }
