@@ -1,19 +1,21 @@
+import { cli } from 'cli-ux'
 import { container } from 'tsyringe'
 
-import { TranslationFiles } from '../modules/i18n/codebase/translation-files'
+import { Codebase } from '@modules/i18n/codebase/codebase'
+
 import Command from './base'
 
 export default class Report extends Command {
 	static description = 'get a report on translation progress'
 
 	async run(): Promise<void> {
-		const translationFiles = container.resolve(TranslationFiles)
+		const codebase = container.resolve(Codebase)
+		const progressReports = await codebase.getTranslationProgress()
 
-		const allTranslations = await translationFiles.getAllTranslationsFromAllLanguages()
-
-		for (const language of Object.keys(allTranslations)) {
-			const numOfTranslations = allTranslations[language].length
-			this.log(`${ language }: ${ numOfTranslations }`)
-		}
+		cli.table(progressReports, {
+			language: {},
+			translationKeys: { get: (row) => row.translatedStrings },
+			'%': { get: (row) => (row.percentageOfStringsTranslated * 100).toFixed(2) },
+		})
 	}
 }
