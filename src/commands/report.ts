@@ -1,19 +1,33 @@
+import { flags } from '@oclif/command'
 import { cli } from 'cli-ux'
 import { container } from 'tsyringe'
 
+import { TranslationProgress } from '../modules/i18n/models/translation-progress'
 import { Codebase } from '../modules/i18n/codebase/codebase'
 import Command from './base'
 
 export default class Report extends Command {
 	static description = 'get a report on translation progress'
 
+	static flags = {
+		ascending: flags.boolean({ char: 'a' }),
+		descending: flags.boolean({ char: 'd' }),
+	}
+
 	async run(): Promise<void> {
+		const { flags } = this.parse(Report)
+		const { ascending, descending } = flags
+
 		const codebase = container.resolve(Codebase)
-		const progressReports = await codebase.getTranslationProgress()
+		let progressReports = await codebase.getTranslationProgress()
+
+		if (ascending) {
+			progressReports = this.sortAscending(progressReports)
+		} else if (descending) {
+			progressReports = this.sortDescending(progressReports)
+		}
 
 		let index = 0
-
-		this.log('')
 
 		cli.table(progressReports, {
 			index: { header: '#', get: () => `${ index++ }`.padStart('99'.length, ' ') },
@@ -21,6 +35,14 @@ export default class Report extends Command {
 			translationKeys: { header: 'Keys translated', get: (row) => row.translatedStrings },
 			'%': { get: (row) => this.formatPercentage(row.percentageOfStringsTranslated) },
 		})
+	}
+
+	private sortAscending(progressReports: TranslationProgress[]) {
+		return progressReports.sort((a, b) => a.translatedStrings - b.translatedStrings)
+	}
+
+	private sortDescending(progressReports: TranslationProgress[]) {
+		return progressReports.sort((a, b) => b.translatedStrings - a.translatedStrings)
 	}
 
 	private formatPercentage(percentage: number) {
