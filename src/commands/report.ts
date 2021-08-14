@@ -30,9 +30,9 @@ export default class Report extends Command {
 		let index = 0
 
 		cli.table(progressReports, {
-			index: { header: '#', get: () => `${ index++ }`.padStart('99'.length, ' ') },
+			index: { header: '#', get: () => this.alignRight(index++, '99'.length) },
 			language: { header: 'Lang' },
-			translationKeys: { header: 'Keys translated', get: (row) => row.translatedStrings },
+			translationKeys: { header: 'Keys translated', get: (row) => this.alignRight(row.translatedStrings, TranslationProgress.stringsKnown) },
 			'%': { get: (row) => this.formatPercentage(row.percentageOfStringsTranslated) },
 		})
 	}
@@ -45,10 +45,15 @@ export default class Report extends Command {
 		return progressReports.sort((a, b) => b.translatedStrings - a.translatedStrings)
 	}
 
-	private formatPercentage(percentage: number) {
-		const twoDigits = (percentage * 100).toFixed(1)
-		const padded = twoDigits.padStart('100.0'.length, ' ')
+	private alignRight(value: string | number, maxLen: number | string) {
+		const str = String(value)
+		const padding = typeof maxLen === 'number' ? maxLen : maxLen.length
 
-		return padded
+		return str.padStart(padding, ' ')
+	}
+
+	private formatPercentage(percentage: number) {
+		const twoDigits = (percentage * 100).toFixed(2)
+		return this.alignRight(twoDigits, '100.00')
 	}
 }
