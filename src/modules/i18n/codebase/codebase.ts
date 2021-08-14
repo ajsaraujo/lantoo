@@ -1,10 +1,11 @@
 import { injectable } from 'tsyringe'
 
-import { PRIMARY_LANGUAGE } from '../languages';
+import { PRIMARY_LANGUAGE } from '../languages'
 import { Translation, TranslationKey } from '../models/translation-key'
+import { TranslationProgress } from '../models/translation-progress'
 import { CodeParser } from './code-parser'
 import { KeyAssembler } from './key-assembler'
-import { TranslationFiles } from './translation-files';
+import { TranslationFiles } from './translation-files'
 
 /**
  * Parses translation files and the codebase to
@@ -18,7 +19,7 @@ export class Codebase {
 	) {}
 
 	async addTranslation(key: string, value: string, language: string): Promise<void> {
-		await this.translationFiles.addTranslation(key, value, language);
+		await this.translationFiles.addTranslation(key, value, language)
 	}
 
 	async getUntranslatedKeys(language: string): Promise<TranslationKey[]> {
@@ -50,13 +51,20 @@ export class Codebase {
 		return result.value
 	}
 
+	async getTranslationProgress(): Promise<TranslationProgress[]> {
+		const allTranslations = await this.translationFiles.getAllTranslationsFromAllLanguages()
+		const progressReports = Object.entries(allTranslations).map(([language, translations]) => new TranslationProgress(language, translations.length))
+
+		return progressReports
+	}
+
 	private async getAllKeys(language: string): Promise<TranslationKey[]> {
 		const occurrences = await this.codeParser.getKeyOccurrences()
 		const translations = await this.translationFiles.getTranslations(language)
-		let primaryLanguageTranslations: Record<string, Translation> = {};
+		let primaryLanguageTranslations: Record<string, Translation> = {}
 
 		if (language !== PRIMARY_LANGUAGE) {
-			primaryLanguageTranslations = await this.translationFiles.getTranslations(PRIMARY_LANGUAGE);
+			primaryLanguageTranslations = await this.translationFiles.getTranslations(PRIMARY_LANGUAGE)
 		}
 
 		return new KeyAssembler(occurrences, translations, primaryLanguageTranslations).assemble()
