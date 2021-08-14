@@ -19,7 +19,7 @@ $ npm install -g lantoo
 $ lantoo COMMAND
 running command...
 $ lantoo (-v|--version|version)
-lantoo/0.0.20 linux-x64 node-v14.17.4
+lantoo/0.0.21 linux-x64 node-v14.17.4
 $ lantoo --help [COMMAND]
 USAGE
   $ lantoo COMMAND
@@ -42,7 +42,7 @@ USAGE
   $ lantoo base
 ```
 
-_See code: [src/commands/base.ts](https://github.com/ajsaraujo/lantoo/blob/v0.0.20/src/commands/base.ts)_
+_See code: [src/commands/base.ts](https://github.com/ajsaraujo/lantoo/blob/v0.0.21/src/commands/base.ts)_
 
 ## `lantoo config lang`
 
@@ -61,7 +61,7 @@ EXAMPLES
   $ lantoo config lang
 ```
 
-_See code: [src/commands/config.ts](https://github.com/ajsaraujo/lantoo/blob/v0.0.20/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/ajsaraujo/lantoo/blob/v0.0.21/src/commands/config.ts)_
 
 ## `lantoo find`
 
@@ -87,7 +87,7 @@ EXAMPLES
   $ lantoo find --lang pt-BR
 ```
 
-_See code: [src/commands/find.ts](https://github.com/ajsaraujo/lantoo/blob/v0.0.20/src/commands/find.ts)_
+_See code: [src/commands/find.ts](https://github.com/ajsaraujo/lantoo/blob/v0.0.21/src/commands/find.ts)_
 
 ## `lantoo help [COMMAND]`
 
@@ -119,7 +119,7 @@ OPTIONS
   -d, --descending
 ```
 
-_See code: [src/commands/report.ts](https://github.com/ajsaraujo/lantoo/blob/v0.0.20/src/commands/report.ts)_
+_See code: [src/commands/report.ts](https://github.com/ajsaraujo/lantoo/blob/v0.0.21/src/commands/report.ts)_
 
 ## `lantoo translate --key Away_female --value Ausente`
 
@@ -141,5 +141,5 @@ EXAMPLES
   $ lantoo translate --interactive --lang en
 ```
 
-_See code: [src/commands/translate.ts](https://github.com/ajsaraujo/lantoo/blob/v0.0.20/src/commands/translate.ts)_
+_See code: [src/commands/translate.ts](https://github.com/ajsaraujo/lantoo/blob/v0.0.21/src/commands/translate.ts)_
 <!-- commandsstop -->

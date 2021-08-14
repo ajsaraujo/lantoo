@@ -32,7 +32,7 @@ export default class Report extends Command {
 		cli.table(progressReports, {
 			index: { header: '#', get: () => this.alignRight(index++, '99'.length) },
 			language: { header: 'Lang' },
-			translationKeys: { header: 'Keys translated', get: (row) => this.alignRight(row.translatedStrings, TranslationProgress.stringsKnown) },
+			translationKeys: { header: 'Keys translated', get: (row) => this.alignRight(row.translatedStrings, String(TranslationProgress.stringsKnown)) },
 			'%': { get: (row) => this.formatPercentage(row.percentageOfStringsTranslated) },
 		})
 	}
