@@ -7,6 +7,7 @@
     "postpack",
     "tsyringe"
   ],
+
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.tabSize": 4
 }

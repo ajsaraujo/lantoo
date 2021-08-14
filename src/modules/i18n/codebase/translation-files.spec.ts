@@ -45,4 +45,31 @@ describe('TranslationFiles', () => {
 			expect(translation?.value).to.equal('maçã');
 		})
 	})
+
+	describe('getAllTranslationsFromAllLanguages()', () => {
+		it('should return a map with all translations from all languages', async () => {
+			fs.readJSON.callsFake(async (path: string) => {
+				if (path.includes('en')) {
+					return {
+						away_male: 'Away',
+						__count__people_in_the_room: '_count_ people in the room',
+						settings: 'Configurações',
+					};
+				}
+
+				return {
+					away_male: 'Ausente',
+					__count_people_in_the_room: '_count_ pessoas na sala',
+				}
+			})
+
+			fs.getFileNames.resolves(['en.i18n.json', 'pt-BR.i18n.js'])
+
+			const translations = await translationFiles.getAllTranslationsFromAllLanguages();
+
+			expect(Object.keys(translations).length).to.equal(2);
+			expect(translations.en.length).to.equal(3);
+			expect(translations['pt-BR'].length).to.equal(2);
+		});
+	})
 })
