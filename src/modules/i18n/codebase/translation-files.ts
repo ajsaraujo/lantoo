@@ -49,12 +49,12 @@ export class TranslationFiles {
 		const allTranslations: Record<string, Translation[]> = {}
 
 		const promises = languages.map(async (language: string) => {
+			let translations
+			
 			try {
-				const translations = await this.getTranslations(language);
+				translations = await this.getTranslations(language);
 				allTranslations[language] = Object.values(translations);
 			} catch (err) {
-				console.log(`Could not read translations from language ${ language }`)
-				
 				if (err instanceof TypeError) {
 					return
 				}
