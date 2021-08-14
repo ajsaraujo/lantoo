@@ -16,7 +16,7 @@ export default class Report extends Command {
 		this.log('')
 
 		cli.table(progressReports, {
-			index: { header: '#', get: () => `${ index++ }`.padStart(2, '0') },
+			index: { header: '#', get: () => `${ index++ }`.padStart(2, ' ') },
 			language: { header: 'Lang' },
 			translationKeys: { header: 'Keys translated', get: (row) => row.translatedStrings },
 			'%': { get: (row) => this.formatPercentage(row.percentageOfStringsTranslated) },
@@ -25,7 +25,7 @@ export default class Report extends Command {
 
 	private formatPercentage(percentage: number) {
 		const twoDigits = (percentage * 100).toFixed(1)
-		const padded = twoDigits.padStart(3, ' ')
+		const padded = twoDigits.padStart(4, ' ')
 
 		return padded
 	}
