@@ -6,10 +6,10 @@ type JSON = unknown[] | Record<string, unknown>
 @singleton()
 export class FileSystem {
 	getFileNames(folderPath: string): Promise<string[]> {
-		return fs.readdir(folderPath);
+		return fs.readdir(folderPath)
 	}
 
-	readJSON(path: string): Promise<JSON> {
+	readJSON(path: string): Promise<JSON | undefined> {
 		return fs.readJSON(path)
 	}
 
