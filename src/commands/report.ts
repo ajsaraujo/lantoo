@@ -1,8 +1,7 @@
 import { cli } from 'cli-ux'
 import { container } from 'tsyringe'
 
-import { Codebase } from '@modules/i18n/codebase/codebase'
-
+import { Codebase } from '../modules/i18n/codebase/codebase'
 import Command from './base'
 
 export default class Report extends Command {
