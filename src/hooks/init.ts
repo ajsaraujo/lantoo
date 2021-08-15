@@ -1,20 +1,20 @@
-import { container } from 'tsyringe';
+import { container } from 'tsyringe'
 
-import { IPreferencesStorage, PreferencesStorage } from '../modules/preferences';
-import { FuzzyFinder, IFuzzyFinder } from '../modules/i18n/fuzzy-finder';
+import { AppFactory } from '../modules/i18n/apps';
 
-function registerSingletons(): void {
-	container.register<IFuzzyFinder>('FuzzyFinder', FuzzyFinder);
-
+async function registerSingletons(this: { error: (message: string) => void }): Promise<void> {
 	// Don't register the singletons below in test environment
 	if (process.env.NODE_ENV === 'test') {
-		return;
+		return
 	}
 
-	container.registerSingleton<IPreferencesStorage>(
-		'PreferencesStorage',
-		PreferencesStorage,
-	);
+	try {
+		const appFactory = container.resolve(AppFactory);
+		const app = await appFactory.getCurrentApp();
+		container.registerInstance('App', app);
+	} catch (err) {
+		this.error('Could not find a package.json file. For lantoo to work properly, please run it at the root folder of a Rocket.Chat project.\n');
+	}
 }
 
-export default registerSingletons;
+export default registerSingletons

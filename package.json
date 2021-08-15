@@ -1,7 +1,7 @@
 {
   "name": "lantoo",
   "description": "Rocket.Chat Language Tool",
-  "version": "0.0.0",
+  "version": "0.0.22",
   "author": "Allan Juan @ajsaraujo",
   "bin": {
     "lantoo": "./bin/run"
@@ -11,8 +11,11 @@
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.2",
+    "@types/inquirer": "^7.3.3",
+    "cli-ux": "^5.6.3",
     "fs-extra": "^10.0.0",
     "fuse.js": "^6.4.6",
+    "inquirer": "^8.1.2",
     "reflect-metadata": "^0.1.13",
     "tslib": "^1.14.1",
     "tsyringe": "^4.5.0"
@@ -25,7 +28,7 @@
     "@types/chai-as-promised": "^7.1.4",
     "@types/fs-extra": "^9.0.11",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^10.17.60",
+    "@types/node": "^16.4.13",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
     "chai": "^4.3.4",
@@ -81,13 +84,14 @@
     "pretty-quick": "pretty-quick",
     "postpack": "rimraf oclif.manifest.json",
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "test": "ts-mocha --paths -p tsconfig.json src/**/*.spec.ts --bail",
+    "test": "ts-mocha \"src/**/*.spec.ts\" --paths -p tsconfig.json --bail",
     "coverage": "nyc --extension .ts mocha --forbid-only \"src/**/*.spec.ts\"",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme && git add README.md",
+    "lint": "eslint src/**/*.ts --fix"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "npm run lint"
     }
   },
   "types": "lib/index.d.ts"
